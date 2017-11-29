@@ -34,5 +34,6 @@ export default {
   'Content': '内容',
   'Finished': '已完成',
   'Unfinished': '未完成',
-  'Just for fun': '开心就好'
+  'Just for fun': '开心就好',
+  'Domain': '域'
 }

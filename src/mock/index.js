@@ -11,7 +11,9 @@ mock.onGet('/users').reply(200, {
 mock.onGet('/tasks').reply(200, {
   data: data.tasks.slice(0, 10)
 })
-
+mock.onGet('/domain').reply(200, {
+  data: data.domain.slice(0, 10)
+})
 mock.onPost('/login').reply(200, {
   user: data.users[0],
   token: 'DFJ091283U09AODFUP018923U4J123J'

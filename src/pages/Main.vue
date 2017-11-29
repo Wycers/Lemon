@@ -1,6 +1,6 @@
 <template lang="pug">
-v-app(:dark="dark",standalone)
-  v-navigation-drawer(v-model='drawer',:mini-variant.sync="mini", persistent,enable-resize-watcher, :dark="dark")
+v-app(:dark="dark")
+  v-navigation-drawer(v-model='drawer',:mini-variant.sync="mini", persistent,enable-resize-watcher, :dark="dark", fixed, clipped, app)
     .pa-3.text-xs-center(v-show="!mini")
       div.display-2.py-4 Lemon!
       p {{$t('Just for fun')}}
@@ -36,7 +36,7 @@ v-app(:dark="dark",standalone)
             v-list-tile-title {{ $t(item.title) }}
           v-list-tile-action(v-if='item.subAction')
             v-icon.success--text {{ item.subAction }}
-  v-toolbar.darken-1(fixed,dark,:class="theme") 
+  v-toolbar.darken-1(fixed, dark,:class="theme", clipped-left, app) 
     v-toolbar-side-icon(dark, @click.stop='drawer = !drawer')
     v-toolbar-title {{$t(pageTitle)}}
     v-spacer
@@ -51,12 +51,13 @@ v-app(:dark="dark",standalone)
         v-icon(dark) format_paint
       v-list
         v-list-tile(v-for="n in colors", :key="n", :class="n",@mouseover.native="theme = n")
-  main
+  v-content
     v-container.pa-4(fluid)
-        v-alert(v-bind='message', v-model='message.body', dismissible) {{message.body}}
-        .py-2
-          v-slide-y-transition(mode='out-in')
-            router-view
+      v-alert(v-bind='message', v-model='message.body', dismissible) {{message.body}}
+      .py-2
+        v-slide-y-transition(mode='out-in')
+          router-view
+          
   
   <v-footer class="pa-3">
     <v-spacer></v-spacer>

@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  v-dialog(:value='true', persistent='')
+  v-dialog(:value='true', max-width="290", persistent='')
     v-card(hover='', style='background:white')
       v-card-row.deep-purple.darken-1
         v-card-title.black--text

@@ -6,11 +6,34 @@ let data = {
   posts: [],
   comments: [],
   tasks: [],
-  menu: []
+  menu: [],
+  domain: []
 }
 
+data.domain.push(Mock.mock({
+  title: '大学物理',
+  etitle: 'Physics',
+  id: '1'
+}))
+
+data.domain.push(Mock.mock({
+  title: '线性代数',
+  etitle: 'Linear Algebra',
+  id: '2'
+}))
+data.domain.push(Mock.mock({
+  title: 'Java A2',
+  etitle: 'Java A2',
+  id: '3'
+}))
+data.domain.push(Mock.mock({
+  title: 'English',
+  etitle: 'English',
+  id: '4'
+}))
+
 data.menu.push(Mock.mock({
-  'header': 'XD'
+  header: 'XD'
 }))
 data.menu.push(Mock.mock({
   href: '/',

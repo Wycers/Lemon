@@ -8,6 +8,7 @@ export default [
   { 'href': '/crud/comments', 'title': 'Comments', 'icon': 'view_list' },
   { 'href': '/crud/users/', 'title': 'Users', 'icon': 'people' },
   { 'href': '/chat', 'title': 'Chat', 'icon': 'chat' },
+  { 'href': '/domain', 'title': 'Domain', 'icon': 'chat' },
   {
     'title': 'Pages',
     'icon': 'domain',
