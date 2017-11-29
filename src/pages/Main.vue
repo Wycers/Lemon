@@ -3,11 +3,9 @@ v-app(:dark="dark",standalone)
   v-navigation-drawer(v-model='drawer',:mini-variant.sync="mini", persistent,enable-resize-watcher, :dark="dark")
     .pa-3.text-xs-center(v-show="!mini")
       div.display-2.py-4 Lemon!
-      p {{$t('An admin dashboard based on Vuetify')}}
-      div(style="padding-left:5em")
-        v-switch(:label="(!dark ? 'Light' : 'Dark') + ' Theme'", v-model="dark", :dark="dark", hide-details)    
+      p {{$t('Just for fun')}}
       div
-        v-btn(dark, tag="a", href="https://github.com/wxs77577/adminify", primary) 
+        v-btn(dark, tag="a", href="https://github.com/Wycers/Lemon", primary) 
           v-icon(left, dark) star
           span Github 
     .pa-3.text-xs-center(v-show="mini")

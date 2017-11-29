@@ -1,8 +1,8 @@
 {
-  "name": "vue-adminify",
+  "name": "Lemon!",
   "version": "1.0.0",
-  "description": "An Admin dashboard based on Vuetify",
-  "author": "Johnny.Wu <wu-xuesong@qq.com>",
+  "description": "QwQ",
+  "author": "Wycer",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -70,7 +70,7 @@
     "vue-loader": "^12.1.0",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.3.3",
-    "vuetify": "^0.14",
+    "vuetify": "^0.15",
     "vuex": "^2.3.1",
     "webpack": "^2.6.1",
     "webpack-bundle-analyzer": "^2.2.1",

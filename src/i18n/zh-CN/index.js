@@ -33,5 +33,6 @@ export default {
   'Deadline': 'Deadline',
   'Content': '内容',
   'Finished': '已完成',
-  'Unfinished': '未完成'
+  'Unfinished': '未完成',
+  'Just for fun': '开心就好'
 }
