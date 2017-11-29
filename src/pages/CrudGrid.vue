@@ -22,7 +22,7 @@ div()
             // also you can try this: inline edit
             // v-btn(v-if="options.edit !== false",dark,fab,success,small,@click.native.stop="showEdit(props.item)")
             //   v-icon() edit
-            v-btn(fab,small,@click="remove(props.item)")
+            v-btn(v-if="options.delete !== false", fab,small,@click="remove(props.item)")
               v-icon() delete
     .jc
       v-pagination.ma-3(v-model='pagination.page', :length='totalPages', circle)
