@@ -35,5 +35,7 @@ export default {
   'Finished': '已完成',
   'Unfinished': '未完成',
   'Just for fun': '开心就好',
-  'Domain': '域'
+  'Domain': '域',
+  'Lecturer': '讲师',
+  'Teacher Assistant': '助教'
 }

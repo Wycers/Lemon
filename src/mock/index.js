@@ -5,6 +5,23 @@ import data from './data'
 
 let mock = new MockAdapter(axios, { delayResponse: 80 })
 
+mock.onGet('/domainDetail').reply(({ params }) => {
+  if (params.id === '1') {
+    return [200, {
+      lecturer: ['李景治'],
+      'TA': ['TA1', 'TA2'],
+      'notice': '233',
+      id: params.id
+    }]
+  } else {
+    return [200, {
+      lecturer: ['李景治2'],
+      'TA': ['TA3', 'TA4'],
+      'notice': '233',
+      id: params.id
+    }]
+  }
+})
 mock.onGet('/users').reply(200, {
   data: data.users.slice(0, 10)
 })

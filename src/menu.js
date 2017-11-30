@@ -8,7 +8,14 @@ export default [
   { 'href': '/crud/comments', 'title': 'Comments', 'icon': 'view_list' },
   { 'href': '/crud/users/', 'title': 'Users', 'icon': 'people' },
   { 'href': '/chat', 'title': 'Chat', 'icon': 'chat' },
-  { 'href': '/domain', 'title': 'Domain', 'icon': 'chat' },
+  {
+    'title': 'Domain',
+    'icon': 'chat',
+    'items': [
+      {'href': '/domain/1', 'title': '线性代数'},
+      {'href': '/domain/2', 'title': '大学物理'}
+    ]
+  },
   {
     'title': 'Pages',
     'icon': 'domain',

@@ -24,8 +24,8 @@
       </v-flex>
     </v-layout>
   </v-container>
-  h4 {{ $t('Todos') }}
-  <div id="e3" style="max-width: 100%; margin: auto;" class="grey lighten-3">
+  div.headline {{ $t('Todos') }}
+  <div style="max-width: 100%; margin: auto;" class="grey lighten-3">
     v-container(fluid, grid-list-lg, style="min-height: 0;")
       v-layout(row, wrap)
         v-flex(xs12, md6, :tasks="tasks", v-for='task in tasks')
