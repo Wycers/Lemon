@@ -5,18 +5,43 @@ import data from './data'
 
 let mock = new MockAdapter(axios, { delayResponse: 80 })
 
+mock.onGet('/score').reply(({ params }) => {
+  return [200, data.scores[0]]
+})
 mock.onGet('/domainDetail').reply(({ params }) => {
   if (params.id === '1') {
     return [200, {
-      lecturer: ['李景治'],
-      'TA': ['TA1', 'TA2'],
+      lecturer: [{
+        name: '李景治',
+        uid: 233
+      }],
+      'TA': [
+        {
+          name: 'TA1',
+          uid: 234
+        }, {
+          name: 'TA2',
+          uid: 235
+        }
+      ],
       'notice': '233',
       id: params.id
     }]
   } else {
     return [200, {
-      lecturer: ['李景治2'],
-      'TA': ['TA3', 'TA4'],
+      lecturer: [{
+        name: '好吧',
+        uid: 236
+      }],
+      'TA': [
+        {
+          name: 'TA3',
+          uid: 237
+        }, {
+          name: 'TA4',
+          uid: 238
+        }
+      ],
       'notice': '233',
       id: params.id
     }]

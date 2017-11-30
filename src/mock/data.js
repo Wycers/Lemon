@@ -7,9 +7,15 @@ let data = {
   comments: [],
   tasks: [],
   menu: [],
-  domain: []
+  domain: [],
+  scores: []
 }
-
+data.scores.push(Mock.mock({
+  score: '8',
+  fullscore: '10',
+  title: 'Chapter 1',
+  note: 'QwQ'
+}))
 data.domain.push(Mock.mock({
   title: '大学物理',
   etitle: 'Physics',

@@ -37,5 +37,9 @@ export default {
   'Just for fun': '开心就好',
   'Domain': '域',
   'Lecturer': '讲师',
-  'Teacher Assistant': '助教'
+  'Teacher Assistant': '助教',
+  'Scores': '成绩册',
+  'Score': '分数',
+  'Fullscore': '满分',
+  'Ratio': '比例'
 }
