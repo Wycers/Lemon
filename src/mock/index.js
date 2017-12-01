@@ -4,7 +4,17 @@ import MockAdapter from 'axios-mock-adapter'
 import data from './data'
 
 let mock = new MockAdapter(axios, { delayResponse: 80 })
-
+mock.onGet('/user').reply(({ params }) => {
+  return [200, {
+    uid: params.id,
+    name: '李景治',
+    ename: 'Jingzhi Li',
+    avatar: 'http://www.sustc.edu.cn/upload/images/campus/04shude/%E4%B9%A6%E9%99%A2%E7%AE%80%E4%BB%8B%E7%9B%B8%E5%85%B3/%E6%9D%8E%E6%99%AF%E6%B2%BB_1.jpg',
+    address: '慧园3栋406',
+    describetion: '非常厉害',
+    comments: ['233', '2333']
+  }]
+})
 mock.onGet('/score').reply(({ params }) => {
   return [200, data.scores[0]]
 })

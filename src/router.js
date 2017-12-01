@@ -31,6 +31,7 @@ const router = new Router({
       route('/crud/:resource/:id/:action', 'CrudForm', 'action'),
       route('/crud/:resource/:action', 'CrudForm', 'indexAction'),
       route('/domain/:domainid', 'Domain', 'domain'),
+      route('/user/:uid', 'User', 'user'),
       route('/example', 'Example'),
       route('/settings', 'Settings'),
       route('/theme', 'Theme'),

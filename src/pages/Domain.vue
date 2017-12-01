@@ -36,7 +36,7 @@
               </div>
             </v-card-title>
             <v-card-actions>
-              <v-btn flat color="orange" :to="'/user/' + `${item.uid}`">查看详情</v-btn>
+              <v-btn flat color="orange" :to="'/user/' + `${item.uid}`">{{$t('Details')}}</v-btn>
               <v-btn flat color="orange">预约答疑</v-btn>
             </v-card-actions>
           </v-card>
@@ -89,7 +89,6 @@
     },
     methods: {
       fetchDomain () {
-        console.log(this.domainid)
         this.$http.get('/domainDetail', {
           params: {id: this.domainid}
         }).then(({data}) => {

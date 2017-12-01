@@ -52,11 +52,8 @@ v-app(:dark="dark")
       v-list
         v-list-tile(v-for="n in colors", :key="n", :class="n",@mouseover.native="theme = n")
   v-content
-    v-container.pa-4(fluid)
-      v-alert(v-bind='message', v-model='message.body', dismissible) {{message.body}}
-      .py-2
-        v-slide-y-transition(mode='out-in')
-          router-view
+    v-slide-y-transition(mode='out-in')
+      router-view
           
   
   <v-footer class="pa-3">

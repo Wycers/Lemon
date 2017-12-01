@@ -1,0 +1,4 @@
+v-container.pa-4(fluid)
+      v-alert(v-bind='message', v-model='message.body', dismissible) {{message.body}}
+      .py-2
+        

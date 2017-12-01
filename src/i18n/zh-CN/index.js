@@ -41,5 +41,7 @@ export default {
   'Scores': '成绩册',
   'Score': '分数',
   'Fullscore': '满分',
-  'Ratio': '比例'
+  'Ratio': '比例',
+  'Activity': '动态',
+  'Details': '查看详情'
 }
