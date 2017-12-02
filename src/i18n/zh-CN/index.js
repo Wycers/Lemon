@@ -43,5 +43,7 @@ export default {
   'Fullscore': '满分',
   'Ratio': '比例',
   'Activity': '动态',
-  'Details': '查看详情'
+  'Details': '查看详情',
+  'students manage': '学生管理',
+  'teachers manage': '教师管理'
 }

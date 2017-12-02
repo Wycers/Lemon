@@ -5,10 +5,12 @@ export default [
     'title': 'Domain',
     'icon': 'chat',
     'items': [
-      {'href': '/domain/1', 'title': '线性代数'},
-      {'href': '/domain/2', 'title': '大学物理'}
+      {'href': '/domain/1', 'title': 'Linear'},
+      {'href': '/domain/2', 'title': 'Physics'}
     ]
   },
+  {'href': '/users/students', 'title': 'Students manage', 'icon': 'view_list'},
+  {'href': '/users/teachers', 'title': 'Teachers manage', 'icon': 'view_list'},
   { 'href': '/crud/types', 'title': 'Types', 'icon': 'view_list' },
   { 'href': '/crud/posts', 'title': 'Posts', 'icon': 'view_list' },
   { 'href': '/crud/posts/create', 'title': 'Create Post', 'icon': 'note_add' },

@@ -32,16 +32,17 @@ const router = new Router({
       route('/crud/:resource/:action', 'CrudForm', 'indexAction'),
       route('/domain/:domainid', 'Domain', 'domain'),
       route('/user/:uid', 'User', 'user'),
+      route('/users/:resource', 'Manage', 'user manage'),
       route('/example', 'Example'),
       route('/settings', 'Settings'),
       route('/theme', 'Theme'),
       route('/chat', 'Chat'),
       route('/about', 'About'),
       route('/domain', 'Domain')
-    ])
+    ]),
 
     // Global redirect for 404
-    // { path: '*', redirect: '/error', query: {code: 404, message: 'Page Not Found.'} }
+    { path: '*', redirect: '/error', query: {code: 404, message: 'Page Not Found.'} }
   ]
 })
 

@@ -29,7 +29,7 @@ v-app(:dark="dark")
               v-list-tile-title {{ $t(subItem.title) }}
         v-subheader(v-else-if='item.header') {{ item.header }}
         v-divider(v-else-if='item.divider')
-        v-list-tile(v-else,:to='item.href', router, ripple, v-bind:disabled='item.disabled', :title="item.title")
+        v-list-tile(v-else,:to='item.href', router, v-bind:disabled='item.disabled', :title="item.title")
           v-list-tile-action
             v-icon() {{ item.icon }}
           v-list-tile-content
@@ -54,8 +54,6 @@ v-app(:dark="dark")
   v-content
     v-slide-y-transition(mode='out-in')
       router-view
-          
-  
   <v-footer class="pa-3">
     <v-spacer></v-spacer>
     <div>Copyright © {{ new Date().getFullYear() }} Wycer All Rights Reserverd</div>

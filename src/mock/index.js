@@ -57,9 +57,6 @@ mock.onGet('/domainDetail').reply(({ params }) => {
     }]
   }
 })
-mock.onGet('/users').reply(200, {
-  data: data.users.slice(0, 10)
-})
 mock.onGet('/tasks').reply(200, {
   data: data.tasks.slice(0, 10)
 })
@@ -265,14 +262,13 @@ mock.onGet('/posts/grid').reply(200, {
     }
   ]
 })
-mock.onGet('/users').reply(200, data.users[0])
 
 mock.onGet('/users/grid').reply(200, {
   'options': {
-    'sort': '-id',
-    'create': false,
-    'update': false,
-    'delete': false
+    'sort': '+id',
+    'create': true,
+    'update': true,
+    'delete': true
   },
   'filters': {
     'model': {
@@ -292,9 +288,9 @@ mock.onGet('/users/grid').reply(200, {
   },
   'columns': [
     {
-      'text': 'ID',
+      'text': 'UID',
       mid: true,
-      'value': 'id'
+      'value': 'uid'
     },
     {
       'text': 'Username',
@@ -303,12 +299,12 @@ mock.onGet('/users/grid').reply(200, {
     },
     {
       'text': 'Avatar',
-      left: true,
+      mid: true,
       'value': 'avatar'
     },
     {
       'text': 'Nickname',
-      left: true,
+      mid: true,
       'value': 'nickname'
     }
 

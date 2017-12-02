@@ -1,14 +1,14 @@
 <template lang="pug">
-v-layout
-  v-flex(xs8)
-    v-form(v-model="model", v-bind="$data", :method="method", :action="action", @success="onSuccess")
-      div(slot="buttons",class="my-4")
-        
-        v-btn(dark, class="grey",@click.native="$root.back()") 
-          v-icon(dark, left) chevron_left 
-          span {{$t('Back')}}
-        v-btn(primary, dark, type='submit') {{$t('Submit')}}
-          v-icon(right, dark) send
+v-container
+  v-layout
+    v-flex(xs8)
+      v-form(v-model="model", v-bind="$data", :method="method", :action="action", @success="onSuccess")
+        div(slot="buttons",class="my-4")
+          v-btn(dark, class="grey",@click.native="$root.back()") 
+            v-icon(dark, left) chevron_left 
+            span {{$t('Back')}}
+          v-btn(primary, dark, type='submit') {{$t('Submit')}}
+            v-icon(right, dark) send
 </template>
 
 <script>
@@ -77,7 +77,7 @@ export default {
     onSuccess (data) {
       this.$router.push({name: 'grid', params: {resource: this.resource}})
       if (data.id) {
-        // this.$router.go(-1)
+        this.$router.go(-1)
       }
     }
   },

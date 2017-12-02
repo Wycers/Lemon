@@ -46,6 +46,14 @@ const store = new Vuex.Store({
     },
     checkPageTitle ({commit, state}, path) {
       for (let k in state.menu) {
+        if (state.menu[k].items) {
+          for (let i in state.menu[k].items) {
+            if (state.menu[k].items[i].href === path) {
+              commit('setPageTitle', state.menu[k].title + ':' + state.menu[k].items[i].title)
+              console.log(state.menu[k].items[i].title)
+            }
+          }
+        }
         if (state.menu[k].href === path) {
           commit('setPageTitle', state.menu[k].title)
           break
