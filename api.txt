@@ -1,4 +1,77 @@
-v-container.pa-4(fluid)
-      v-alert(v-bind='message', v-model='message.body', dismissible) {{message.body}}
-      .py-2
-        
+#1 
+Aim:查询用户信息
+Address:"/user"
+Args: userID.
+Data example:
+{
+    uid: params.id,
+    name: '李景治',
+    ename: 'Jingzhi Li',
+    avatar: 'http://www.sustc.edu.cn/upload/images/campus/04shude/%E4%B9%A6%E9%99%A2%E7%AE%80%E4%BB%8B%E7%9B%B8%E5%85%B3/%E6%9D%8E%E6%99%AF%E6%B2%BB_1.jpg',
+    address: '慧园3栋406', 
+    describetion: '非常厉害',
+    comments: ['233', '2333']
+}
+
+#2
+Aim:查询用户某科成绩
+Address:"/score"
+Args: userID
+      domainID
+Data example:
+{
+  score: '8',
+  fullscore: '10',
+  title: 'Chapter 1',
+  note: 'QwQ'
+}
+
+#3
+Aim:查询用户的所有域
+Address:"/domain"
+Args: userID
+Data example: (一个数组)
+[{
+  title: '大学物理',
+  etitle: 'Physics',
+  id: '1'
+},
+{
+  title: '线性代数',
+  etitle: 'Linear Algebra',
+  id: '2'
+}]
+
+#4
+Aim:验证用户登录
+Address:"/login"
+Args: userID
+Data example:
+{
+  uid: 1,
+  username: 'admin'
+  token: 'DFJ091283U09AODFUP018923U4J123J' //随机字段 用于暂时标记用户 
+}
+
+#5
+Aim:查看某个域的详情
+Address:"/domainDetail"
+Args: domainID
+Data example:
+{
+  lecturer: [{
+    name: '李景治',
+    uid: 233
+  }],
+  'TA': [
+    {
+      name: 'TA1',
+      uid: 234
+    }, {
+      name: 'TA2',
+      uid: 235
+    }
+  ],
+  'notice': '233',
+  id: params.id
+}

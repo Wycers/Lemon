@@ -44,6 +44,8 @@ export default {
   'Ratio': '比例',
   'Activity': '动态',
   'Details': '查看详情',
-  'students manage': '学生管理',
-  'teachers manage': '教师管理'
+  'Students manage': '学生管理',
+  'Teachers manage': '教师管理',
+  'Teacher': '教师',
+  'Student': '学生'
 }

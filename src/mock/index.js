@@ -279,9 +279,14 @@ mock.onGet('/users/grid').reply(200, {
       'username': {
         'label': 'Username'
       },
-      'created_at': {
-        'label': 'Created At',
-        'type': 'date'
+      'type': {
+        label: 'Type',
+        type: 'select',
+        choices: [
+          {text: 'All', value: 0},
+          {text: 'Teacher', value: 1},
+          {text: 'Student', value: 2}
+        ]
       }
     },
     'rules': {}
@@ -298,9 +303,9 @@ mock.onGet('/users/grid').reply(200, {
       'value': 'username'
     },
     {
-      'text': 'Avatar',
+      'text': 'Type',
       mid: true,
-      'value': 'avatar'
+      'value': 'type'
     },
     {
       'text': 'Nickname',
@@ -323,9 +328,18 @@ mock.onGet('/users/form').reply(({ params }) => {
         'label': 'Nickname',
         'required': true
       },
+      'type': {
+        label: 'Type',
+        type: 'select',
+        choices: [
+          {text: 'Teacher', value: 1},
+          {text: 'Student', value: 2}
+        ],
+        'required': true
+      },
       'avatar': {
         'label': 'Avatar',
-        'required': false
+        'required': true
       }
 
     }

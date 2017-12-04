@@ -1,8 +1,8 @@
 <template lang="pug">
-div()
+v-container
   v-layout
     v-flex(md4)
-      div {{pagination.totalItems}} 
+      div {{filters}} 
     v-flex(md8)
       v-form.row.jr(:inline='true', v-model='filters.model', v-if="filters.fields", :fields='filters.fields', @submit='doSearch', submitButtonText='Search', submitButtonIcon='search')
   v-card
@@ -62,7 +62,7 @@ const getDefaultData = () => {
     },
     pagination: {
       page: 1,
-      rowsPerPage: 15,
+      rowsPerPage: 10,
       sortBy: 'uid',
       descending: true,
       totalItems: 0
@@ -197,6 +197,7 @@ export default {
     },
     fetchData () {
       this.preFetch()
+      console.log(this.$route.query)
       this.$http.get(`${this.resource}`, {params: this.$route.query}).then(({ data }) => {
         this.items = data.data
         this.pagination.totalItems = data.total

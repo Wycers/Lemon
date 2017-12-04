@@ -82,6 +82,7 @@ data.tasks.push(Mock.mock({
 for (let i = 1; i <= 30; i++) {
   data.users.push(Mock.mock({
     uid: i,
+    type: 'teacher',
     username: '@first',
     password: '123456',
     avatar: '@image',

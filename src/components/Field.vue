@@ -1,10 +1,10 @@
 <template lang="pug">
 v-flex(xs12)
-  v-select(v-if="['select', 'select2'].includes(field.type)", :items='field.choices', v-model='model', v-bind='field')
+  v-select(v-if="['select', 'select2'].includes(field.type)", :items='tchoices', v-model='model', v-bind='field')
   template(v-else-if="['radios', 'checkboxes'].indexOf(field.type) > -1")
     p {{$t(field.label)}}
     v-layout(row, wrap)
-      v-flex(v-bind="{[field.width]: true}",xs12, v-for='option in field.choices',:key="field.value")
+      v-flex(v-bind="{[field.width]: true}",xs12, v-for='option in tchoices',:key="field.value")
         component(
           v-model='model', 
           hide-details,
@@ -33,7 +33,6 @@ v-flex(xs12)
 <script>
 
 export default {
-
   props: {
     field: {
       type: Object,
@@ -53,7 +52,16 @@ export default {
     }
   },
   computed: {
-
+    tchoices () {
+      let tmp = []
+      for (let i in this.field.choices) {
+        tmp.push({
+          'text': this.$t(this.field.choices[i].text),
+          'value': this.field.choices[i].value
+        })
+      }
+      return tmp
+    },
     model: {
       get () {
         return this.value
