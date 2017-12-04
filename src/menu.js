@@ -9,8 +9,8 @@ export default [
       {'href': '/domain/2', 'title': 'Physics'}
     ]
   },
-  {'href': '/users/students', 'title': 'Students manage', 'icon': 'view_list'},
-  {'href': '/users/teachers', 'title': 'Teachers manage', 'icon': 'view_list'},
+  {'href': '/users/students', 'title': 'Students manage', 'icon': 'people'},
+  {'href': '/users/teachers', 'title': 'Teachers manage', 'icon': 'people'},
   { 'href': '/crud/types', 'title': 'Types', 'icon': 'view_list' },
   { 'href': '/crud/posts', 'title': 'Posts', 'icon': 'view_list' },
   { 'href': '/crud/posts/create', 'title': 'Create Post', 'icon': 'note_add' },

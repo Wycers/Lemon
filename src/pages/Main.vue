@@ -36,7 +36,7 @@ v-app(:dark="dark")
             v-list-tile-title {{ $t(item.title) }}
           v-list-tile-action(v-if='item.subAction')
             v-icon.success--text {{ item.subAction }}
-  v-toolbar.darken-1(fixed, dark,:class="theme", clipped-left, app) 
+  v-toolbar.darken-1(fixed, dark,:class="theme", clipped-left, app, style="z-index:1000") 
     v-toolbar-side-icon(dark, @click.stop='drawer = !drawer')
     v-toolbar-title {{$t(pageTitle)}}
     v-spacer
