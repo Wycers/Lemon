@@ -49,7 +49,7 @@ export default {
     '$route': 'fetch',
     'model': 'updateFields'
   },
-  methods: {  
+  methods: {
     getFieldError (fieldName) {
       for (let k in this.errors) {
         let error = this.errors[k]
