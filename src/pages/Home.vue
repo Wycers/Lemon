@@ -65,12 +65,18 @@ export default {
         while (this.finished.length) {
           this.finished.pop()
         }
-        this.tasks = data.data
-        for (let i in data.data) {
-          if (data.data[i].finished === true) {
-            this.finished.push(data.data[i].id.toString())
+        while (this.tasks.length) {
+          this.tasks.pop()
+        }
+        console.log(data)
+        for (let i in data) {
+          console.log(i)
+          this.tasks.push(data[i])
+          if (data[i].finished === true) {
+            this.finished.push(data[i].id.toString())
           }
         }
+        console.log(this.tasks)
       })
     }
   },
