@@ -47,5 +47,10 @@ export default {
   'Students manage': '学生管理',
   'Teachers manage': '教师管理',
   'Teacher': '教师',
-  'Student': '学生'
+  'Student': '学生',
+  'Appointment': '预约',
+  'Unconfirmed': '未确认的',
+  'Confirmed': '确认的',
+  'Edit': '编辑',
+  'Modify': '修改'
 }

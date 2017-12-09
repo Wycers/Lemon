@@ -20,13 +20,13 @@ const router = new Router({
   routes: [
     route('/login', 'Login', 'login'),
     route('/error', 'Error', 'error'),
-
     // path, file(*.vue), name, children
 
     route('/', 'Main', null, [
       route('/', 'Home', 'home'),
       route('/crud/:resource', 'CrudGrid', 'grid'),
       route('/crud/:resource/:id/edit', 'CrudForm', 'edit'),
+      route('/crud/:resource/users/:id/edit', 'CrudForm', 'edit'),
       route('/crud/:resource/create', 'CrudForm', 'create'),
       route('/crud/:resource/:id/:action', 'CrudForm', 'action'),
       route('/crud/:resource/:action', 'CrudForm', 'indexAction'),
@@ -38,7 +38,8 @@ const router = new Router({
       route('/theme', 'Theme'),
       route('/chat', 'Chat'),
       route('/about', 'About'),
-      route('/domain', 'Domain')
+      route('/domain', 'Domain'),
+      route('/appointments', 'Appointment')
     ]),
 
     // Global redirect for 404

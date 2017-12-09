@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import moment from 'moment'
+Object.defineProperty(Vue.prototype, '$moment', { value: moment })
 import helper from './helper'
 global.helper = helper
 import config from './config'

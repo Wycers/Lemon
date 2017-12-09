@@ -9,6 +9,7 @@ export default [
       {'href': '/domain/2', 'title': 'Physics'}
     ]
   },
+  {'href': '/appointments', 'title': 'Appointment', 'icon': 'people'},
   {'href': '/users/students', 'title': 'Students manage', 'icon': 'people'},
   {'href': '/users/teachers', 'title': 'Teachers manage', 'icon': 'people'},
   { 'href': '/crud/types', 'title': 'Types', 'icon': 'view_list' },

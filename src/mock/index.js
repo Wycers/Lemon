@@ -15,6 +15,137 @@ mock.onGet('/user').reply(({ params }) => {
     comments: ['233', '2333']
   }]
 })
+
+mock.onGet('/appointment/menu').reply(({params}) => {
+  return [200, [
+    {
+      index: 0,
+      title: 'Confirmed appointments',
+      href: '/appointment/confirmed',
+      count: 1
+    },
+    {
+      index: 1,
+      title: 'In-process appointments',
+      href: '/appointment/inprocess',
+      count: 2
+    },
+    {
+      index: 2,
+      title: 'Done appointments',
+      href: '/appointment/done',
+      count: 1
+    },
+    {
+      index: 3,
+      title: 'Closed appointments',
+      href: '/appointment/closed',
+      count: 1
+    }
+  ]
+  ]
+})
+
+mock.onGet('/appointment/confirmed').reply(({params}) => {
+  return [200, [
+    {
+      aid: 1,
+      sname: '吴烨昌',
+      sename: 'Wycer',
+      tname: '李景治',
+      avatar: 'http://localhost:3335/static/1.jpg',
+      tename: 'Jingzhi Li',
+      time: '20171229',
+      location: '慧园2栋 403'
+    }
+  ]]
+})
+mock.onGet('/appointment/inprocess').reply(({params}) => {
+  return [200, [
+    {
+      aid: 2,
+      sname: '吴烨昌',
+      sename: 'Wycer',
+      tname: '李景治',
+      avatar: 'http://localhost:3335/static/1.jpg',
+      tename: 'Jingzhi Li',
+      time: '20171229',
+      location: '慧园2栋 403'
+    },
+    {
+      aid: 3,
+      sname: '吴烨昌',
+      sename: 'Wycer',
+      avatar: 'http://localhost:3335/static/1.jpg',
+      tname: '李景治',
+      tename: 'Jingzhi Li',
+      time: '20171229',
+      location: '慧园2栋 403'
+    },
+    {
+      aid: 3,
+      sname: '吴烨昌',
+      sename: 'Wycer',
+      avatar: 'http://localhost:3335/static/1.jpg',
+      tname: '李景治',
+      tename: 'Jingzhi Li',
+      time: '20171229',
+      location: '慧园2栋 403'
+    },
+    {
+      aid: 3,
+      sname: '吴烨昌',
+      sename: 'Wycer',
+      avatar: 'http://localhost:3335/static/1.jpg',
+      tname: '李景治',
+      tename: 'Jingzhi Li',
+      time: '20171229',
+      location: '慧园2栋 403'
+    }
+  ]]
+})
+mock.onGet('/appointment/done').reply(({params}) => {
+  return [200, [
+    {
+      aid: 4,
+      sname: '吴烨昌',
+      sename: 'Wycer',
+      tname: '李景治',
+      avatar: 'http://localhost:3335/static/1.jpg',
+      tename: 'Jingzhi Li',
+      time: '20171210 1209',
+      location: '慧园2栋 403'
+    }
+  ]]
+})
+mock.onGet('/appointment/closed').reply(({params}) => {
+  return [200, [
+    {
+      aid: 5,
+      sname: '吴烨昌',
+      sename: 'Wycer',
+      tname: '李景治',
+      avatar: 'http://localhost:3335/static/1.jpg',
+      tename: 'Jingzhi Li',
+      time: '20171229',
+      location: '慧园2栋 403'
+    }
+  ]]
+})
+
+mock.onGet('/appointment').reply(({params}) => {
+  return [200, {
+    aid: params.id,
+    sname: '吴烨昌',
+    sename: 'Wycer',
+    tname: '李景治',
+    tename: 'Jingzhi Li',
+    avatar: 'http://localhost:3335/static/1.jpg',
+    time: '20171229',
+    location: '慧园2栋 403'
+  }]
+})
+
 mock.onGet('/score').reply(({ params }) => {
   return [200, data.scores[0]]
 })
@@ -188,7 +319,7 @@ mock.onGet('/posts/form').reply(({ params }) => {
         'type': 'select',
         'label': 'Type',
         'required': true,
-        'options': data.choices('types')
+        'choices': data.choices('types')
       },
       'title': {
         'label': 'title',
@@ -280,9 +411,9 @@ mock.onGet('/users/grid').reply(200, {
         'label': 'Username'
       },
       'type': {
-        label: 'Type',
-        type: 'select',
-        choices: [
+        'label': 'Type',
+        'type': 'select',
+        'choices': [
           {text: 'All', value: 0},
           {text: 'Teacher', value: 1},
           {text: 'Student', value: 2}

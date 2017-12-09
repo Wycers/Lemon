@@ -65,6 +65,7 @@ export default {
       this.$http.get(`${this.resource}/form`, {
         params: {id: this.id}
       }).then(({data}) => {
+        console.log(data.fields)
         this.model = data.model
         this.fields = data.fields
         this.rules = data.rules
