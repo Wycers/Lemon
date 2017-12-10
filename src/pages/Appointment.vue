@@ -13,21 +13,21 @@
             </div>
             <v-card>
               <v-list three-line>
-                <template lazy v-for="(item, key) in items[i]">
-                  <p>{{gg}}</p>
-                  <v-subheader v-if="item.header" v-text="item.header"></v-subheader>
-                  <v-divider v-else-if="item.divider" v-bind:inset="item.inset"></v-divider>
-                  <v-list-tile avatar v-bind:key="item.tname" @click="modify(item.aid)">
-                    <v-list-tile-avatar>
-                      <img v-bind:src="item.avatar"/>
-                    </v-list-tile-avatar>
-                    <v-list-tile-content>
-                      <v-list-tile-title v-html="item.tname + item.tename"></v-list-tile-title>
-                      <v-list-tile-sub-title v-html="$moment(item.time).calendar() + ' at ' + item.location"></v-list-tile-sub-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </template>
-              </v-list>
+                <v-list-tile v-for="(item, key) in items[i]" avatar v-bind:key="item.tname" @click="modify(item.aid)">
+                  <v-list-tile-avatar>
+                    <img v-bind:src="item.avatar"/>
+                  </v-list-tile-avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="item.tname + item.tename"></v-list-tile-title>
+                    <v-list-tile-sub-title v-html="$moment(item.time).calendar() + ' at ' + item.location"></v-list-tile-sub-title>
+                  </v-list-tile-content>
+                  <v-list-tile-action>
+                    <v-btn icon ripple>
+                      <v-icon color="grey lighten-1">info</v-icon>
+                    </v-btn>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </v-list> 
             </v-card>
           </v-expansion-panel-content>
         </v-expansion-panel>
