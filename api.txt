@@ -75,3 +75,7 @@ Data example:
   'notice': '233',
   id: params.id
 }
+
+#6
+Aim:查看某个学生的所有预约
+Address:""

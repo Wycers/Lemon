@@ -56,7 +56,10 @@ mock.onGet('/appointment/confirmed').reply(({params}) => {
       avatar: 'http://localhost:3335/static/1.jpg',
       tename: 'Jingzhi Li',
       time: '20171229',
-      location: '慧园2栋 403'
+      location: '慧园2栋 403',
+      editable: true,
+      deletable: false,
+      cancelable: true
     }
   ]]
 })
@@ -70,7 +73,10 @@ mock.onGet('/appointment/inprocess').reply(({params}) => {
       avatar: 'http://localhost:3335/static/1.jpg',
       tename: 'Jingzhi Li',
       time: '20171229',
-      location: '慧园2栋 403'
+      location: '慧园2栋 403',
+      editable: true,
+      deletable: false,
+      cancelable: true
     },
     {
       aid: 3,
@@ -80,7 +86,10 @@ mock.onGet('/appointment/inprocess').reply(({params}) => {
       tname: '李景治',
       tename: 'Jingzhi Li',
       time: '20171229',
-      location: '慧园2栋 403'
+      location: '慧园2栋 403',
+      editable: true,
+      deletable: false,
+      cancelable: true
     },
     {
       aid: 3,
@@ -90,7 +99,10 @@ mock.onGet('/appointment/inprocess').reply(({params}) => {
       tname: '李景治',
       tename: 'Jingzhi Li',
       time: '20171229',
-      location: '慧园2栋 403'
+      location: '慧园2栋 403',
+      editable: true,
+      deletable: false,
+      cancelable: true
     },
     {
       aid: 3,
@@ -100,7 +112,10 @@ mock.onGet('/appointment/inprocess').reply(({params}) => {
       tname: '李景治',
       tename: 'Jingzhi Li',
       time: '20171229',
-      location: '慧园2栋 403'
+      location: '慧园2栋 403',
+      editable: true,
+      deletable: false,
+      cancelable: true
     }
   ]]
 })
@@ -114,7 +129,10 @@ mock.onGet('/appointment/done').reply(({params}) => {
       avatar: 'http://localhost:3335/static/1.jpg',
       tename: 'Jingzhi Li',
       time: '20171210 1209',
-      location: '慧园2栋 403'
+      location: '慧园2栋 403',
+      editable: false,
+      deletable: true,
+      cancelable: false
     }
   ]]
 })
@@ -128,22 +146,12 @@ mock.onGet('/appointment/closed').reply(({params}) => {
       avatar: 'http://localhost:3335/static/1.jpg',
       tename: 'Jingzhi Li',
       time: '20171229',
-      location: '慧园2栋 403'
+      location: '慧园2栋 403',
+      editable: false,
+      deletable: true,
+      cancelable: false
     }
   ]]
-})
-
-mock.onGet('/appointment').reply(({params}) => {
-  return [200, {
-    aid: params.id,
-    sname: '吴烨昌',
-    sename: 'Wycer',
-    tname: '李景治',
-    tename: 'Jingzhi Li',
-    avatar: 'http://localhost:3335/static/1.jpg',
-    time: '20171229',
-    location: '慧园2栋 403'
-  }]
 })
 
 mock.onGet('/score').reply(({ params }) => {

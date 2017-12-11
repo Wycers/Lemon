@@ -19,7 +19,7 @@
           <v-flex v-bind="{ [`xs${card.flex}`]: true }" v-for="card in cards" :key="card.title">
             <v-card>
               <div class="headline pa-3">
-                span(onclick="alert('233')")
+                span
                   <a class="link subtitle" :href="`/#/user/${user.uid}`">{{user.name}} {{user.ename}}</a>回答了问题
                   <a class="link subtitle" :href="`/#/question/${user.uid}`">666</a>
               </div>

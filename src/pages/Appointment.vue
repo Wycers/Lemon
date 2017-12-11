@@ -5,7 +5,7 @@
     <v-layout row wrap>
       <v-flex xs12 lg12>
         <v-expansion-panel popout>
-          <v-expansion-panel-content v-for="(menu, i) in menus" :key="i" @click.native="load(i)">
+          <v-expansion-panel-content v-for="(menu, i) in menus" :key="i">
             <div slot="header">{{menu.title}} 
               <v-badge color="indigo" v-model="show">
                 <span slot="badge">{{items[i].length}} </span>
@@ -13,7 +13,7 @@
             </div>
             <v-card>
               <v-list three-line>
-                <v-list-tile v-for="(item, key) in items[i]" avatar v-bind:key="item.tname" @click="modify(item.aid)">
+                <v-list-tile v-for="(item, key) in items[i]" avatar v-bind:key="item.tname" @click="">
                   <v-list-tile-avatar>
                     <img v-bind:src="item.avatar"/>
                   </v-list-tile-avatar>
@@ -21,9 +21,19 @@
                     <v-list-tile-title v-html="item.tname + item.tename"></v-list-tile-title>
                     <v-list-tile-sub-title v-html="$moment(item.time).calendar() + ' at ' + item.location"></v-list-tile-sub-title>
                   </v-list-tile-content>
-                  <v-list-tile-action>
-                    <v-btn icon ripple>
-                      <v-icon color="grey lighten-1">info</v-icon>
+                  <v-list-tile-action v-if="item.editable">
+                    <v-btn icon ripple @click.native="modify(i, item.aid)">
+                      <v-icon color="blue lighten-1">edit</v-icon>
+                    </v-btn>
+                  </v-list-tile-action>
+                  <v-list-tile-action v-if="item.deletable">
+                    <v-btn icon ripple @click.native="askDel(i, item.aid)">
+                      <v-icon color="red lighten-1">delete</v-icon>
+                    </v-btn>
+                  </v-list-tile-action>
+                  <v-list-tile-action v-if="item.cancelable">
+                    <v-btn icon ripple @click.native="askCancel(i, item.aid)">
+                      <v-icon color="red lighten-1">cancel</v-icon>
                     </v-btn>
                   </v-list-tile-action>
                 </v-list-tile>
@@ -36,39 +46,42 @@
         </template>
       </v-flex>
     </v-layout>
-  <v-dialog v-model="Toggle" max-width="500px">
+  <v-dialog v-model="EditToggle" max-width="500px">
     <v-card>
-      <v-card-title>{{ $t('Modify ')}}{{ $t('Appointment')}} {{ toEdit}} </v-card-title>
+      <v-card-title>{{ $t('Modify ')}}{{ $t('Appointment')}} {{toEdit}} </v-card-title>
       <v-card-text>
-        <v-btn color="primary" dark @click.stop="dialog3 = !dialog3">Open Dialog 3</v-btn>
-        <v-select v-bind:items="select" label="A Select List" item-value="text"></v-select>
+        <v-btn color="primary" dark @click.stop="DelToggle = !DelToggle">Open Dialog 3</v-btn>
       </v-card-text>
-    <v-card-actions>
-      <v-btn color="primary" flat @click.stop="Toggle = false">Close</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-  <v-dialog v-model="dialog3" max-width="500px">
-    <v-card>
-      <v-card-title>
-        <span>Dialog 3</span>
-        <v-spacer></v-spacer>
-        <v-menu bottom left>
-          <v-btn icon slot="activator">
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-          <v-list>
-            <v-list-tile v-for="(item, i) in items" :key="i" @click="">
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            </v-list-tile>
-          </v-list>
-        </v-menu>
-      </v-card-title>
       <v-card-actions>
-        <v-btn color="primary" flat @click.stop="dialog3=false">Close</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" flat @click.stop="EditToggle = false">Close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-dialog v-model="DelToggle" max-width="500px">
+    <v-card>
+      v-card-title 删除预约
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" flat @click.stop="delConfirmed">确定</v-btn>
+        <v-btn color="primary" flat @click.stop="DelToggle=false">取消</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="CancelToggle" max-width="500px">
+    <v-card>
+      v-card-title 取消预约
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" flat @click.stop="cancelConfirmed">确定</v-btn>
+        <v-btn color="primary" flat @click.stop="CancelToggle=false">取消</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-snackbar :timeout="timeout" top right v-model="snackbar">
+    <p>{{ opt }}{{ resultHint }} </p>
+    <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+  </v-snackbar>
 </template>
 
 <script>
@@ -76,10 +89,17 @@ export default {
   data () {
     return {
       menus: [],
+      active: 0,
+      comfirmHint: null,
+      resultHint: null,
       items: [[], [], [], []],
-      Toggle: false,
-      dialog3: false,
+      EditToggle: false,
+      DelToggle: false,
+      CancelToggle: false,
+      opt: null,
       toEdit: null,
+      snackbar: true,
+      timeout: 5000,
       itemss: [
         { header: 'Today' },
         { avatar: 'https://vuetifyjs.com/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
@@ -109,7 +129,39 @@ export default {
     },
     modify (aid) {
       this.toEdit = aid
-      this.Toggle = true
+      this.EditToggle = true
+    },
+    askDel (aid) {
+      this.toEdit = aid
+      this.DelToggle = true
+      this.$http.get('/appointment/del/hint', {
+
+      })
+    },
+    askCancel (aid) {
+      this.toEdit = aid
+      this.CancelToggle = true
+      this.$http.get('/appointment/cancel/hint', {
+
+      })
+    },
+    delConfirmed () {
+      console.log(this.toEdit)
+      this.$http.get('/appointment/del', {params: this.toEdit}).then(({ data }) => {
+        this.opt = 'del'
+        this.resultHint = data
+        this.snackbar = true
+      })
+      this.DelToggle = false
+    },
+    cancelConfirmed () {
+      console.log(this.toEdit)
+      this.$http.get('/appointment/cancel', {params: this.toEdit}).then(({ data }) => {
+        this.opt = 'cancel'
+        this.resultHint = data
+        this.snackbar = true
+      })
+      this.CancelToggle = false
     },
     fetch () {
       this.$http.get('/appointment/menu', {
