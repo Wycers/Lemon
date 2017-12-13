@@ -26,7 +26,7 @@ const router = new Router({
       route('/', 'Home', 'home'),
       route('/crud/:resource', 'CrudGrid', 'grid'),
       route('/crud/:resource/:id/edit', 'CrudForm', 'edit'),
-      route('/crud/:resource/users/:id/edit', 'CrudForm', 'edit'),
+      route('/crud/:resource/users/:id/edit', 'CrudForm', 'modify'),
       route('/crud/:resource/create', 'CrudForm', 'create'),
       route('/crud/:resource/:id/:action', 'CrudForm', 'action'),
       route('/crud/:resource/:action', 'CrudForm', 'indexAction'),
@@ -39,7 +39,8 @@ const router = new Router({
       route('/chat', 'Chat'),
       route('/about', 'About'),
       route('/domain', 'Domain'),
-      route('/appointments', 'Appointment')
+      route('/appointments', 'Appointment'),
+      route('/appointments/create', 'newAppointment', 'makeAppointment')
     ]),
 
     // Global redirect for 404

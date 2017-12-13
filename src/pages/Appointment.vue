@@ -50,7 +50,13 @@
     <v-card>
       <v-card-title>{{ $t('Modify ')}}{{ $t('Appointment')}} {{toEdit}} </v-card-title>
       <v-card-text>
-        <v-btn color="primary" dark @click.stop="DelToggle = !DelToggle">Open Dialog 3</v-btn>
+        v-form(v-model="model", v-bind="$data", :method="method", :action="action", @success="onSuccess")
+          div(slot="buttons",class="my-4")
+            v-btn(dark, class="grey",@click.native="EditToggle = false") 
+              v-icon(dark, left) chevron_left 
+              span {{$t('Back')}}
+            v-btn(color="primary", dark, type='submit') {{$t('Submit')}}
+              v-icon(right, dark) send
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -111,7 +117,11 @@ export default {
         { avatar: 'https://vuetifyjs.com/static/doc-images/lists/4.jpg', title: 'Birthday gift', subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday?" },
         { divider: true, inset: true },
         { avatar: 'https://vuetifyjs.com/static/doc-images/lists/5.jpg', title: 'Recipe to try', subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos." }
-      ]
+      ],
+      model: {},
+      fields: {},
+      rules: {},
+      messages: {}
     }
   },
 
@@ -171,6 +181,37 @@ export default {
         for (let i in this.menus) {
           this.load(i)
         }
+      })
+      this.$http.get('/appointment/form', {
+        params: {id: this.id}
+      }).then(({data}) => {
+        console.log(data.fields)
+        this.model = data.model
+        this.fields = data.fields
+        this.rules = data.rules
+        this.messages = data.messages
+      })
+    },
+    getUser (uid) {
+      this.$http.get('/appointment/query', {
+        params: {uid: this.$store.state.toAppoint}
+      }).then(({data}) => {
+        this.toAppoint = data.uid
+        var choices = []
+        for (let i in data.timeblocks) {
+          choices.push({
+            text: this.$moment(data.timeblocks[i].timeBegin).calendar() + ' ~ ' + this.$moment(data.timeblocks[i].timeEnd).calendar() + ' at ' + data.timeblocks[i].location,
+            value: i
+          })
+        }
+        this.fields.select.choices = choices
+        console.log('qwq')
+      })
+      this.$http.get('/user', {
+        params: {uid: this.toAppoint}
+      }).then(({data}) => {
+        console.log(data)
+        this.Headline = this.$t('create an appointment') + ':' + data.name
       })
     }
   },

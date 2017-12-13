@@ -52,5 +52,8 @@ export default {
   'Unconfirmed': '未确认的',
   'Confirmed': '确认的',
   'Edit': '编辑',
-  'Modify': '修改'
+  'Modify': '修改',
+  'Appoint': '预约',
+  'create an appointment': '创建预约',
+  'Timeblock': '时间块'
 }

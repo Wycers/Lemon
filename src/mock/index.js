@@ -32,8 +32,8 @@ mock.onGet('/appointment/menu').reply(({params}) => {
     },
     {
       index: 2,
-      title: 'Done appointments',
-      href: '/appointment/done',
+      title: 'Finished appointments',
+      href: '/appointment/finished',
       count: 1
     },
     {
@@ -119,7 +119,7 @@ mock.onGet('/appointment/inprocess').reply(({params}) => {
     }
   ]]
 })
-mock.onGet('/appointment/done').reply(({params}) => {
+mock.onGet('/appointment/finished').reply(({params}) => {
   return [200, [
     {
       aid: 4,
@@ -342,6 +342,34 @@ mock.onGet('/posts/form').reply(({ params }) => {
   }]
 })
 
+mock.onGet('/appointment/form').reply(({ params }) => {
+  return [200, {
+    'model': {
+      type_id: null,
+      title: null,
+      body: null
+    },
+    'fields': {
+      'title': {
+        'label': 'Title',
+        'required': true
+      },
+      'select': {
+        'type': 'select',
+        'label': 'Timeblock',
+        'required': true,
+        'choices': [{
+          text: '233',
+          value: 0
+        }]
+      },
+      'body': {
+        'label': 'Body',
+        'type': 'html'
+      }
+    }
+  }]
+})
 // for `update` action of resources
 mock.onPatch(/\/\w+\/\d+$/).reply(({ params, data: body, url }) => {
   // const id = url.split('/')[2]
@@ -402,6 +430,76 @@ mock.onGet('/posts/grid').reply(200, {
   ]
 })
 
+mock.onGet('/appointment/query').reply(({ params }) => {
+  return [200, {
+    uid: params.uid,
+    timeblocks: [
+      {
+        timeBegin: '20171213 1234',
+        timeEnd: '20171213 1244',
+        occupied: 'null',
+        location: '慧园2栋203'
+      },
+      {
+        timeBegin: '20171214 1235',
+        timeEnd: '20171214 1245',
+        occupied: 'null',
+        location: '慧园2栋203'
+      }
+    ]
+  }]
+})
+
+mock.onGet('/appointment/grid').reply(200, {
+  'options': {
+    'sort': '-id',
+    'create': true,
+    'update': true,
+    'delete': true
+  },
+  'filters': {
+    'model': {
+      'title': '',
+      'type_id': null,
+      'created_at': ''
+    },
+    'fields': {
+      'title': {
+        'label': 'Title'
+      },
+      'type_id': {
+        'type': 'select',
+        'label': '',
+        'options': data.choices('types')
+      },
+      'created_at': {
+        'label': 'Created At',
+        'type': 'date'
+      }
+    },
+    'rules': {}
+  },
+  'columns': [
+    {
+      'text': 'Id',
+      'value': 'id'
+    },
+    {
+      'text': 'Type',
+      left: true,
+      'value': 'type.name'
+    },
+    {
+      'text': 'Title',
+      left: true,
+      'value': 'title'
+    },
+    {
+      'text': 'Created At',
+      'value': 'created_at'
+    }
+  ]
+})
 mock.onGet('/users/grid').reply(200, {
   'options': {
     'sort': '+id',

@@ -14,8 +14,8 @@ const store = new Vuex.Store({
       type: null,
       body: null
     },
-    config: config
-
+    config: config,
+    toAppoint: null
   },
   mutations: {
 
@@ -33,6 +33,9 @@ const store = new Vuex.Store({
     },
     showMessage (state, type, body) {
       state.message = { type, body }
+    },
+    setToAppoint (state, data) {
+      state.toAppoint = data
     }
   },
   actions: {

@@ -5,7 +5,7 @@
     </div>
     <v-container fluid grid-list-lg>
       <v-layout row wrap>
-        <v-flex class="md3" v-for="item in detail.lecturer">
+        <v-flex class="md3" v-for="(item,i ) in detail.lecturer" :key="i">
           <v-card class="elevation-4">
             <v-card-title primary-title>
               <div>
@@ -14,8 +14,8 @@
               </div>
             </v-card-title>
             <v-card-actions>
-              <v-btn flat color="orange" :to="'/user/' + `${item.uid}`">查看详情</v-btn>
-              <v-btn flat color="orange">预约答疑</v-btn>
+              <v-btn flat color="orange" :to="'/user/' + `${item.uid}`">{{$t('Details')}}</v-btn>
+              <v-btn flat color="orange" @click.native="createAppointment(item.uid)">{{$t('Appoint')}}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -27,7 +27,7 @@
     </div>
     <v-container fluid grid-list-lg>
       <v-layout row wrap>
-        <v-flex md3 v-for="item in detail.TA">
+        <v-flex md3 v-for="(item, i) in detail.TA" :key="i">
           <v-card class="elevation-4">
             <v-card-title primary-title>
               <div>
@@ -37,7 +37,7 @@
             </v-card-title>
             <v-card-actions>
               <v-btn flat color="orange" :to="'/user/' + `${item.uid}`">{{$t('Details')}}</v-btn>
-              <v-btn flat color="orange">预约答疑</v-btn>
+              <v-btn flat color="orange" @click.native="createAppointment(item.uid)">{{$t('Appoint')}}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -101,6 +101,10 @@
         }).then(({data}) => {
           this.items.push(data)
         })
+      },
+      createAppointment (uid) {
+        this.$store.commit('setToAppoint', uid)
+        this.$router.push({path: '/appointments/create'})
       }
     },
     computed: {
