@@ -84,14 +84,18 @@ export default {
       this.$i18n.locale = to
     },
     fetchMenu () {
-      // fetch menu from server
-      // this.$http.get('menu').then(({data}) => this.$store.commit('setMenu', data))
+      this.$http.get('/menu', {
+        params: {token: this.$store.state.token}
+      }).then(({data}) => this.$store.commit('setMenu', data))
     }
   },
 
   created () {
     this.fetchMenu()
+    let value = this.$store.state.token
+    if (value === null || typeof (value) === 'undefined' || value === '') {
+      this.$router.replace('/login')
+    }
   }
 }
 </script>
-

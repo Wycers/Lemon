@@ -27,7 +27,7 @@
       div.pt-2
         dropzone(:id="'dropzone_' + name", :url="$store.state.config.ajaxUploadUrl")
           input(type='hidden', v-model='model')
-    v-text-field(v-else, v-model='model', v-bind='field', :label="$t(field.label)", value='1', :placeholder="$t(field.placeholder)" type="text",:multiLine="field.type == 'textarea'")
+    v-text-field(v-else, v-model='model', v-bind='field', :label="$t(field.label)", value='1', :placeholder="$t(field.placeholder)" :type="field.type",:multiLine="field.type == 'textarea'")
 </template>
 <script>
 

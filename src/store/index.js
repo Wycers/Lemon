@@ -20,12 +20,14 @@ const store = new Vuex.Store({
   mutations: {
 
     setAuth (state, { user, token }) {
+      console.log(token)
       state.user = user
       state.token = token
       global.helper.ls.set('user', user)
       global.helper.ls.set('token', token)
     },
     setMenu (state, data) {
+      console.log(data)
       state.menu = data
     },
     setPageTitle (state, data) {

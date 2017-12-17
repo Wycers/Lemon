@@ -142,32 +142,36 @@ export default {
           this.$emit('submit')
           return false
         }
-
+        console.log(this.method)
+        console.log(this.action)
+        console.log(this.model)
         this.$http[this.method](this.action, this.model).then(({ data }) => {
-          this.$emit('success', data)
-          this.hasError = false
-        }).catch(({ response }) => {
-          let { status, data } = response
-          this.hasError = true
-          if (data.message) {
-            this.errors = [data]
-          }
-          switch (status) {
-            case 422:
+          console.log(data)
+          if (data.status === 200) {
+            this.hasError = false
+            this.$emit('success', data)
+          } else {
+            this.hasError = true
+            console.log(status)
+            if (data.message) {
+              this.errors = [data]
+            }
+            switch (status) {
+              case 422:
+                this.errors = data
+                break
+              default:
 
-              this.errors = data
-              break
-            default:
-
+            }
+            this.$emit('error', status, data)
           }
-          this.$emit('error', status, data)
         })
       } else {
         const errors = valid.getErrors()
         this.hasError = true
         this.errors = errors
         this.$emit('error', errors)
-        // this.$bus.showMessage('error', 'error')
+        this.$bus.showMessage('error', 'error')
       }
     }
   },

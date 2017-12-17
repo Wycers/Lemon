@@ -10,7 +10,6 @@ mock.onGet('/user').reply(({ params }) => {
     name: '李景治',
     ename: 'Jingzhi Li',
     avatar: 'http://www.sustc.edu.cn/upload/images/campus/04shude/%E4%B9%A6%E9%99%A2%E7%AE%80%E4%BB%8B%E7%9B%B8%E5%85%B3/%E6%9D%8E%E6%99%AF%E6%B2%BB_1.jpg',
-    address: '慧园3栋406',
     describetion: '非常厉害',
     comments: ['233', '2333']
   }]
@@ -44,6 +43,41 @@ mock.onGet('/appointment/menu').reply(({params}) => {
     }
   ]
   ]
+})
+
+mock.onGet('/menu').reply(({params}) => {
+  return [200, [
+    {'header': params},
+    { 'header': 'XD' },
+    { 'href': '/', 'title': 'Home', 'icon': 'home' },
+    {
+      'title': 'Domain',
+      'icon': 'chat',
+      'items': [
+        {'href': '/domain/1', 'title': 'Linear'},
+        {'href': '/domain/2', 'title': 'Physics'}
+      ]
+    },
+    {'href': '/appointments', 'title': 'Appointment', 'icon': 'people'},
+    {'href': '/users/students', 'title': 'Students manage', 'icon': 'people'},
+    {'href': '/users/teachers', 'title': 'Teachers manage', 'icon': 'people'},
+    { 'href': '/crud/types', 'title': 'Types', 'icon': 'view_list' },
+    { 'href': '/crud/posts', 'title': 'Posts', 'icon': 'view_list' },
+    { 'href': '/crud/posts/create', 'title': 'Create Post', 'icon': 'note_add' },
+    { 'href': '/crud/users/', 'title': 'Users', 'icon': 'people' },
+    {
+      'title': 'Pages',
+      'icon': 'domain',
+      'items': [
+        { 'href': '/example', 'title': 'Example' },
+        { 'href': '/about', 'title': 'About' }
+      ]
+    },
+    { divider: true },
+    { 'header': 'System' },
+    { 'href': '/settings', 'title': 'Settings', 'icon': 'settings' },
+    { 'href': '/login', 'icon': 'lock', 'title': 'Logout' }
+  ]]
 })
 
 mock.onGet('/appointment/confirmed').reply(({params}) => {
@@ -204,7 +238,9 @@ mock.onGet('/domain').reply(200,
 )
 mock.onPost('/login').reply(200, {
   user: data.users[0],
-  token: 'DFJ091283U09AODFUP018923U4J123J'
+  status: 200,
+  token: 'DFJ091283U09AODFUP018923U4J123J',
+  message: 'wrong code'
 })
 
 // for `index` action of resources

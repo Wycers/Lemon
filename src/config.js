@@ -1,10 +1,10 @@
-const baseUrl = 'http://localhost:3333'
+const baseUrl = 'http://localhost:8080'
 const config = {
   locale: 'en-US', // en-US, zh-CN
   url: baseUrl,
   ajaxUploadUrl: `${baseUrl}/api/upload`,
   debug: {
-    mock: true, // enable mock
+    mock: false, // enable mock
     http: false // http request log
   },
   api: `${baseUrl}/api`

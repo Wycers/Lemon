@@ -19,6 +19,7 @@ helper.ls = {
   },
   get (key, defaultValue) {
     let value = storage.getItem(key, value)
+    console.log(storage)
     if (value === null || value === 'undefined' || value === '') {
       value = defaultValue
     } else {

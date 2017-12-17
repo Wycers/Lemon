@@ -39,7 +39,9 @@ export default {
 
   methods: {
     fetchData () {
-      this.$http.get('/tasks').then(({data}) => {
+      this.$http.get('/tasks', {
+        params: {token: this.$store.state.token}
+      }).then(({data}) => {
         while (this.finished.length) {
           this.finished.pop()
         }

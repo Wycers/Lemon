@@ -50,6 +50,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   global.store.dispatch('checkPageTitle', to.path)
+  console.log(global.store.state.token)
   /* eslint-disable no-undef */
   if (typeof ga !== 'undefined') {
     ga('set', 'page', to.path)
