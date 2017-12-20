@@ -145,7 +145,7 @@ export default {
         console.log(this.method)
         console.log(this.action)
         console.log(this.model)
-        this.$http[this.method](this.action, this.model).then(({ data }) => {
+        this.$http[this.method](this.action, this.model, {params: {token: this.$store.state.token}}).then(({ data }) => {
           console.log(data)
           if (data.status === 200) {
             this.hasError = false

@@ -30,6 +30,7 @@ const router = new Router({
       route('/crud/:resource/create', 'CrudForm', 'create'),
       route('/crud/:resource/:id/:action', 'CrudForm', 'action'),
       route('/crud/:resource/:action', 'CrudForm', 'indexAction'),
+      route('/domain/create', 'newDomain', 'createDomain'),
       route('/domain/:domainid', 'Domain', 'domain'),
       route('/user/:uid', 'User', 'user'),
       route('/users/:resource', 'Manage', 'user manage'),
@@ -40,7 +41,8 @@ const router = new Router({
       route('/about', 'About'),
       route('/domain', 'Domain'),
       route('/appointments', 'Appointment'),
-      route('/appointments/create', 'newAppointment', 'makeAppointment')
+      route('/appointments/create', 'newAppointment', 'makeAppointment'),
+      route('/users/create', 'newUser', 'createUser')
     ]),
 
     // Global redirect for 404

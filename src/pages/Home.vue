@@ -48,15 +48,12 @@ export default {
         while (this.tasks.length) {
           this.tasks.pop()
         }
-        console.log(data)
         for (let i in data) {
-          console.log(i)
           this.tasks.push(data[i])
           if (data[i].finished === true) {
             this.finished.push(data[i].id.toString())
           }
         }
-        console.log(this.tasks)
       })
     }
   },

@@ -28,17 +28,13 @@ export default {
       return this.isEdit ? 'patch' : 'post'
     },
     action () {
-      if (this.isEdit) {
-        return `${this.resource}/${this.id}`
-      } else {
-        return `${this.resource}`
-      }
+      return '/users/create'
     },
     isEdit () {
       return !!this.id
     },
     resource () {
-      return this.$route.params.resource
+      return 'users'
     },
     id () {
       return this.$route.params.id
@@ -57,27 +53,24 @@ export default {
           return error.message
         }
       }
+      console.log(233)
     },
     updateFields () {
 
     },
     fetch () {
-      console.log(`${this.resource}/form`)
-      this.$http.get(`${this.resource}/form`, {
-        params: {id: this.id}
+      this.$http.get('/users/form/create', {
+        params: {token: this.$store.state.token}
       }).then(({data}) => {
-        console.log(data)
-        this.model = data.model
+        console.log(data.fields)
         this.fields = data.fields
-        this.rules = data.rules
-        this.messages = data.messages
       })
     },
     onSubmit () {
-
+      console.log(this.fields)
     },
     onSuccess (data) {
-      this.$router.push({name: 'grid', params: {resource: this.resource}})
+      this.$router.push({name: 'grid', params: {resource: 'users'}})
       if (data.id) {
         this.$router.go(-1)
       }

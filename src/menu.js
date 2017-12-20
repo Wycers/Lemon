@@ -6,7 +6,8 @@ export default [
     'icon': 'chat',
     'items': [
       {'href': '/domain/1', 'title': 'Linear'},
-      {'href': '/domain/2', 'title': 'Physics'}
+      {'href': '/domain/2', 'title': 'Physics'},
+      {'href': '/domain/create', 'title': 'create domain'}
     ]
   },
   {'href': '/appointments', 'title': 'Appointment', 'icon': 'people'},

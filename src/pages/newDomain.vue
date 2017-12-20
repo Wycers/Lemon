@@ -2,12 +2,12 @@
 v-container
   v-layout.justify-center
     v-flex(md8)
-      v-form.row.jr(:inline='true', v-model='filters.model', v-if="filters.fields", :fields='filters.fields', @submit='doSearch', submitButtonText='Search', submitButtonIcon='search')
+      v-text-field(inline, label="Domain's name", :value="domainname", required)
   v-card
     div
-      v-btn(router,fab,absolute,top,right,dark,class="blue", :to="{name: 'createUser'}",v-if="options.create !== false")
+      v-btn(router,fab,absolute,top,right,dark,class="blue", @click.native="showAdd",v-if="options.create !== false")
         v-icon add
-    v-data-table(:headers='columns', :items='items',:total-items="pagination.totalItems",hide-actions, :pagination.sync="pagination", :loading="loading")
+    v-data-table(:headers='columns', :items='items', :total-items="pagination.totalItems",hide-actions, :pagination.sync="pagination", :loading="loading")
       template(slot='items', scope='props')
         tr
           td(:class="column.left? '': 'text-xs-right'", v-for='column in columns', v-html="getColumnData(props.item, column)")
@@ -15,24 +15,26 @@ v-container
             template(v-for="(value, action) in actions")
               v-btn(v-if="['edit', 'delete'].indexOf(action) < 0", router,primary,fab,small,dark,:to="{name: action, params: {id:props.item.uid}}")
                 v-icon {{action.icon ? action.icon : action}}
-            //v-btn(v-if="options.edit !== false",dark,primary,fab,small,:to="{name: 'edit', params: {id:props.item.uid}}")
-            //  v-icon edit
-            // also you can try this: inline edit
-            v-btn(v-if="options.edit !== false",dark,fab,primary,small,@click.native.stop="showEdit(props.item)")
-              v-icon() edit
             v-btn(v-if="options.delete !== false", fab,small, @click="showRemove(props.item)")
               v-icon() delete
-    .jc
-      v-pagination.ma-3(v-model='pagination.page', :length='totalPages', circle)
+    <v-layout row wrap>
+      <v-flex xs5>
+        .jc
+          v-pagination.ma-3(v-model='pagination.page', :length='totalPages', circle)  
+      </v-flex>
+      <v-flex xs2 offset-xs5>
+        v-btn(primary, dark, @click.native="submit") {{$t('submit')}}
+          v-icon(right, dark) send
+      </v-flex>
+    </v-layout>
   
-    
-  v-dialog(v-model="isShowEdit", width="30%")
+  v-dialog(v-model="isShowAdd", width="30%")
     v-card
-      v-card-title {{$t('Edit')}} \#{{currentItem.uid}}
+      v-card-title {{$t('Add a member')}} 
       v-card-text
-        v-form(v-model="form.model", v-bind="form", method="patch", :action="'/users/modify?uid='+currentItem.uid", @success="onSaveEdit")
+        v-form(v-model="form.model", v-bind="form", method="post", :action="'/domain/query'", @success="onSaveEdit")
       v-card-actions(actions)
-        v-btn(flat, primary, @click.native="isShowEdit = false") {{$t('Close')}}
+        v-btn(flat, primary, @click.native="isShowAdd = false") {{$t('Close')}}
   v-dialog(v-model="isShowRemove", width="30%")
     v-card
       v-card-title {{$t('Remove')}} \#{{currentItem.uid}}
@@ -40,7 +42,6 @@ v-container
       v-card-actions(actions)
         v-btn(flat, primary, @click.native="remove(currentItem.uid)") {{$t('Confirm')}}
         v-btn(flat, primary, @click.native="isShowRemove = false") {{$t('Close')}}
-
 </template>
 
 <script>
@@ -61,7 +62,7 @@ const getDefaultData = () => {
     columns: [], // fetch grid setup params from server if `columns` is empty
     actions: {},
     options: {
-      sort: 'id',
+      sort: 'type',
       create: false,
       update: true,
       delete: false
@@ -69,13 +70,15 @@ const getDefaultData = () => {
     pagination: {
       page: 1,
       rowsPerPage: 10,
-      sortBy: 'uid',
+      sortBy: 'type',
       descending: true,
       totalItems: 0
     },
-    isShowEdit: false,
+    isShowAdd: false,
     isShowRemove: false,
+    isEdit: false,
     currentItem: false,
+    domainname: null,
     items: []
   }
 }
@@ -84,49 +87,55 @@ export default {
   data: getDefaultData,
 
   watch: {
-    '$i18n.locale' (val) {
-      this.fetchGrid()
-    },
-    'pagination.page' (val) {
-      this.fetchData()
-    },
-    'pagination.sortBy' (val) {
-      this.fetchData()
-    },
-    'pagination.descending' (val) {
-      this.fetchData()
+    'items.length' (val) {
+      if (val === 0) {
+        this.$router.go(-1)
+      }
     },
     '$route.params': 'refresh'
     // '$route.query': 'updateRoute'
   },
   methods: {
-    fetchForm (item) {
-      this.$http.get('/users/form/modify', {
-        params: {id: item.uid, token: this.$store.state.token}
+    submit () {
+      if (this.isEdit === true) {
+        this.$http.post('/domain/edit', {token: this.$store.state.token, name: this.domainname, users: this.items}).then(({ data }) => {
+          console.log(233)
+          console.log(data)
+        })
+      } else {
+        this.$http.post('/domain/create', {token: this.$store.state.token, name: this.domainname, users: this.items}).then(({ data }) => {
+          console.log(data)
+        })
+      }
+    },
+    showHint (str) {
+      this.Hint = str
+      this.snackbar = true
+    },
+    fetchForm () {
+      this.$http.get('/domain/form/add', {
+        params: {token: this.$store.state.token}
       }).then(({data}) => {
         this.form = data
       })
     },
     onSaveEdit (data) {
-      if (data.uid) {
-        this.isShowEdit = false
-        this.fetchData()
+      for (let i in this.items) {
+        if (this.items[i].uid === data.user.uid) {
+          this.showHint('Repeated item found')
+          data.message = 'Repeated user'
+          return
+        }
       }
-    },
-    showEdit (item) {
-      this.currentItem = item
-      this.fetchForm(item)
-      this.isShowEdit = true
-    },
-    preFetch () {
-      let sort = this.pagination.sortBy
-      if (this.pagination.descending) {
-        sort = '-' + sort
+      if (data.user.uid) {
+        this.isShowAdd = false
       }
-      this.$route.query.query = JSON.stringify(this.filters.model)
-      this.$route.query.sort = sort
-      this.$route.query.perPage = this.pagination.rowsPerPage
-      this.$route.query.page = this.pagination.page
+      data.user.type = this.form.model.type
+      this.items.push(data.user)
+    },
+    showAdd () {
+      this.fetchForm()
+      this.isShowAdd = true
     },
     updateRoute () {
       this.$route.query.keepLayout = true
@@ -137,10 +146,6 @@ export default {
         query: this.$route.query
       })
     },
-    doSearch () {
-      this.pagination.page = 1
-      this.fetchData()
-    },
     filter (val, search) {
       return true
       // this.search = search
@@ -149,7 +154,6 @@ export default {
     refresh () {
       Object.assign(this.$data, getDefaultData())
       this.fetchGrid().then(() => {})
-      this.fetchData()
     },
     fetch () {
       if (this.columns.length <= 0) {
@@ -178,7 +182,7 @@ export default {
     },
     fetchGrid () {
       return new Promise((resolve, reject) => {
-        this.$http.get(`users/grid`, {
+        this.$http.get('/domain/grid', {
           params: { token: this.$store.state.token }
         }).then(({data}) => {
           for (let k in data.columns) {
@@ -194,9 +198,6 @@ export default {
             let desc = sortData.length > 1
             let sortField = sortData.pop()
 
-            // if (sortField.indexOf('.') < 0) {
-            //   sortField = sortField
-            // }
             this.pagination.sort = sortField
             this.pagination.descending = desc
           }
@@ -204,24 +205,18 @@ export default {
         })
       })
     },
-    fetchData () {
-      this.preFetch()
-      console.log(this.$route.query)
-      this.$http.get('/users', {params: this.$route.query}).then(({ data }) => {
-        console.log(data)
-        this.items = data.data
-        this.pagination.totalItems = data.total
-      })
-    },
     showRemove (item) {
       this.currentItem = item
       this.isShowRemove = true
     },
     remove (item) {
-      console.log(item)
-      this.$http.post('/users/remove', {params: {uid: item}}).then(({data}) => {
-        console.log(item)
-      })
+      for (let i in this.items) {
+        if (this.items[i].uid === item) {
+          this.items.splice(i, 1)
+          break
+        }
+      }
+      this.isShowRemove = false
     },
     next () {
       this.pagination.page++
@@ -229,8 +224,6 @@ export default {
   },
   computed: {
     totalPages () {
-      console.log(this.pagination.totalItems)
-      console.log(this.pagination.rowsPerPage)
       return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
     }
   },
@@ -239,10 +232,10 @@ export default {
 
   },
   created () {
+    console.log(this.$store.state.user)
     // this.$store.commit('setPageTitle', global.helper.i.titleize(global.helper.i.pluralize(this.resource)))
     this.fetchGrid().then(() => {})
-    this.fetchData()
-    // this.fetch()
+    this.items.push(this.$store.state.user)
   }
 
 }

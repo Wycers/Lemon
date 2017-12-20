@@ -47,7 +47,6 @@ mock.onGet('/appointment/menu').reply(({params}) => {
 
 mock.onGet('/menu').reply(({params}) => {
   return [200, [
-    {'header': params},
     { 'header': 'XD' },
     { 'href': '/', 'title': 'Home', 'icon': 'home' },
     {
@@ -55,7 +54,8 @@ mock.onGet('/menu').reply(({params}) => {
       'icon': 'chat',
       'items': [
         {'href': '/domain/1', 'title': 'Linear'},
-        {'href': '/domain/2', 'title': 'Physics'}
+        {'href': '/domain/2', 'title': 'Physics'},
+        {'href': '/domain/create', 'title': 'create domain'}
       ]
     },
     {'href': '/appointments', 'title': 'Appointment', 'icon': 'people'},
@@ -64,10 +64,12 @@ mock.onGet('/menu').reply(({params}) => {
     { 'href': '/crud/types', 'title': 'Types', 'icon': 'view_list' },
     { 'href': '/crud/posts', 'title': 'Posts', 'icon': 'view_list' },
     { 'href': '/crud/posts/create', 'title': 'Create Post', 'icon': 'note_add' },
+    { 'href': '/crud/comments', 'title': 'Comments', 'icon': 'view_list' },
     { 'href': '/crud/users/', 'title': 'Users', 'icon': 'people' },
+    { 'href': '/chat', 'title': 'Chat', 'icon': 'chat' },
     {
-      'title': 'Pages',
-      'icon': 'domain',
+      'title': 'Domain',
+      'icon': 'pages',
       'items': [
         { 'href': '/example', 'title': 'Example' },
         { 'href': '/about', 'title': 'About' }
@@ -242,6 +244,14 @@ mock.onPost('/login').reply(200, {
   token: 'DFJ091283U09AODFUP018923U4J123J',
   message: 'wrong code'
 })
+mock.onGet('/domain/query').reply(({ params }) => {
+  console.log(params)
+  return [200, {
+    status: 403,
+    user: data.users[1],
+    message: 'not ok'
+  }]
+})
 
 // for `index` action of resources
 mock.onGet(/\/(posts|users|types|comments)$/).reply(({ params = { page: 1, perPage: 10 }, url }) => {
@@ -252,7 +262,7 @@ mock.onGet(/\/(posts|users|types|comments)$/).reply(({ params = { page: 1, perPa
     currentPage: params.page,
     lastPage: Math.ceil(models.length / params.perPage),
     perPage: params.perPage,
-    total: data[resource].length,
+    total: models.length,
     data: models.slice(offset, offset + params.perPage)
   }]
 })
@@ -546,7 +556,7 @@ mock.onGet('/users/grid').reply(200, {
   'filters': {
     'model': {
       'username': '',
-      'created_at': ''
+      'type': ''
     },
     'fields': {
       'username': {
@@ -556,7 +566,7 @@ mock.onGet('/users/grid').reply(200, {
         'label': 'Type',
         'type': 'select',
         'choices': [
-          {text: 'All', value: 0},
+          {text: 'All', value: 3},
           {text: 'Teacher', value: 1},
           {text: 'Student', value: 2}
         ]
@@ -589,7 +599,7 @@ mock.onGet('/users/grid').reply(200, {
   ]
 })
 
-mock.onGet('/users/form').reply(({ params }) => {
+mock.onGet('/users/form/modify').reply(({ params }) => {
   return [200, {
     'model': data.users[params.id - 1],
     'fields': {
@@ -598,7 +608,7 @@ mock.onGet('/users/form').reply(({ params }) => {
         'required': true
       },
       'nickname': {
-        'label': 'Nickname',
+        'label': 'Name',
         'required': true
       },
       'type': {
@@ -609,16 +619,89 @@ mock.onGet('/users/form').reply(({ params }) => {
           {text: 'Student', value: 2}
         ],
         'required': true
+      }
+    }
+  }]
+})
+mock.onGet('/users/form/create').reply(({ params }) => {
+  return [200, {
+    'fields': {
+      'username': {
+        'label': 'Username',
+        'required': true
       },
-      'avatar': {
-        'label': 'Avatar',
+      'nickname': {
+        'label': 'Name',
+        'required': true
+      },
+      'type': {
+        label: 'Type',
+        type: 'select',
+        choices: [
+          {text: 'Teacher', value: 1},
+          {text: 'Student', value: 2}
+        ],
         'required': true
       }
-
     }
   }]
 })
 
+mock.onGet('/domain/form/add').reply(({params}) => {
+  return [200, {
+    'model': {},
+    'fields': {
+      'uid': {
+        'label': 'Username',
+        'required': true
+      },
+      'type': {
+        label: 'Type',
+        type: 'select',
+        choices: [
+          {text: 'Domain administrator', value: 10},
+          {text: 'Domain lecturer', value: 11},
+          {text: 'Domain assistant', value: 12},
+          {text: 'Domain member', value: 13}
+        ],
+        'required': true
+      }
+    }
+  }]
+})
+
+mock.onGet('/domain/grid').reply(({ params, url }) => {
+  return [200, {
+    'options': {
+      'sort': 'id',
+      'create': true,
+      'update': false,
+      'delete': true
+    },
+    'columns': [
+      {
+        'text': 'Type',
+        'mid': true,
+        'value': 'type'
+      },
+      {
+        'text': 'Uid',
+        'mid': true,
+        'value': 'uid'
+      },
+      {
+        'text': 'username',
+        'mid': true,
+        'value': 'username'
+      },
+      {
+        'text': 'nickname',
+        'mid': true,
+        'value': 'name'
+      }
+    ]
+  }]
+})
 mock.onGet(/\/\w+\/grid$/i).reply(({ params, url }) => {
   return [200, {
     'options': {
