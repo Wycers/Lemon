@@ -15,24 +15,31 @@
               <v-list three-line>
                 <v-list-tile v-for="(item, key) in items[i]" avatar v-bind:key="item.tname" @click="">
                   <v-list-tile-avatar>
-                    <img v-bind:src="item.avatar"/>
+                    <img v-if="($store.state.user.uid === item.s.uid)" :src="item.t.avatar"/>
+                    <img v-if="($store.state.user.uid === item.t.uid)" :src="item.s.avatar"/>
                   </v-list-tile-avatar>
                   <v-list-tile-content>
-                    <v-list-tile-title v-html="item.tname + item.tename"></v-list-tile-title>
-                    <v-list-tile-sub-title v-html="$moment(item.time).calendar() + ' at ' + item.location"></v-list-tile-sub-title>
+                    <v-list-tile-title v-if="($store.state.user.uid === item.s.uid)" v-html="item.t.name"></v-list-tile-title>
+                    <v-list-tile-title v-if="($store.state.user.uid === item.t.uid)" v-html="item.s.name"></v-list-tile-title>
+                    <v-list-tile-sub-title v-html="$moment(item.b.timeBegin).calendar() + ' at ' + item.b.location"></v-list-tile-sub-title> 
                   </v-list-tile-content>
-                  <v-list-tile-action v-if="item.editable">
-                    <v-btn icon ripple @click.native="modify(i, item.aid)">
+                  <v-list-tile-action v-if="($store.state.user.uid === item.t.uid) && (item.confirmable)">
+                    <v-btn icon ripple @click.native="confirm(item.aid)">
+                      <v-icon color="blue lighten-1">done</v-icon>
+                    </v-btn>
+                  </v-list-tile-action>
+                  <v-list-tile-action v-if="($store.state.user.uid === item.s.uid) && (item.editable)">
+                    <v-btn icon ripple @click.native="modify(item.aid)">
                       <v-icon color="blue lighten-1">edit</v-icon>
                     </v-btn>
                   </v-list-tile-action>
                   <v-list-tile-action v-if="item.deletable">
-                    <v-btn icon ripple @click.native="askDel(i, item.aid)">
+                    <v-btn icon ripple @click.native="askDel(item.aid)">
                       <v-icon color="red lighten-1">delete</v-icon>
                     </v-btn>
                   </v-list-tile-action>
                   <v-list-tile-action v-if="item.cancelable">
-                    <v-btn icon ripple @click.native="askCancel(i, item.aid)">
+                    <v-btn icon ripple @click.native="askCancel(item.aid)">
                       <v-icon color="red lighten-1">cancel</v-icon>
                     </v-btn>
                   </v-list-tile-action>
@@ -50,7 +57,7 @@
     <v-card>
       <v-card-title>{{ $t('Modify ')}}{{ $t('Appointment')}} {{toEdit}} </v-card-title>
       <v-card-text>
-        v-form(v-model="model", v-bind="$data", :method="method", :action="action", @success="onSuccess")
+        v-form(v-model="model", v-bind="$data", method="POST", @success="onSuccess")
           div(slot="buttons",class="my-4")
             v-btn(dark, class="grey",@click.native="EditToggle = false") 
               v-icon(dark, left) chevron_left 
@@ -58,10 +65,6 @@
             v-btn(color="primary", dark, type='submit') {{$t('Submit')}}
               v-icon(right, dark) send
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" flat @click.stop="EditToggle = false">Close</v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
   <v-dialog v-model="DelToggle" max-width="500px">
@@ -104,86 +107,22 @@ export default {
       CancelToggle: false,
       opt: null,
       toEdit: null,
-      snackbar: true,
+      snackbar: false,
       timeout: 5000,
-      itemss: [
-        { header: 'Today' },
-        { avatar: 'https://vuetifyjs.com/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
-        { divider: true, inset: true },
-        { avatar: 'https://vuetifyjs.com/static/doc-images/lists/2.jpg', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend." },
-        { divider: true, inset: true },
-        { avatar: 'https://vuetifyjs.com/static/doc-images/lists/3.jpg', title: 'Oui oui', subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?" },
-        { divider: true, inset: true },
-        { avatar: 'https://vuetifyjs.com/static/doc-images/lists/4.jpg', title: 'Birthday gift', subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday?" },
-        { divider: true, inset: true },
-        { avatar: 'https://vuetifyjs.com/static/doc-images/lists/5.jpg', title: 'Recipe to try', subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos." }
-      ],
       model: {},
       fields: {},
       rules: {},
       messages: {}
     }
   },
-
   methods: {
-    load (index) {
-      this.$http.get(this.menus[index].href).then(({ data }) => {
-        while (this.items[index].length > 0) {
-          this.items[index].pop()
-        }
-        for (let i in data) {
-          this.items[index].push(data[i])
-        }
-        console.log(data)
-      })
+    onSuccess () {
+
     },
     modify (aid) {
       this.toEdit = aid
-      this.EditToggle = true
-    },
-    askDel (aid) {
-      this.toEdit = aid
-      this.DelToggle = true
-      this.$http.get('/appointment/del/hint', {
-
-      })
-    },
-    askCancel (aid) {
-      this.toEdit = aid
-      this.CancelToggle = true
-      this.$http.get('/appointment/cancel/hint', {
-
-      })
-    },
-    delConfirmed () {
-      console.log(this.toEdit)
-      this.$http.get('/appointment/del', {params: this.toEdit}).then(({ data }) => {
-        this.opt = 'del'
-        this.resultHint = data
-        this.snackbar = true
-      })
-      this.DelToggle = false
-    },
-    cancelConfirmed () {
-      console.log(this.toEdit)
-      this.$http.get('/appointment/cancel', {params: this.toEdit}).then(({ data }) => {
-        this.opt = 'cancel'
-        this.resultHint = data
-        this.snackbar = true
-      })
-      this.CancelToggle = false
-    },
-    fetch () {
-      this.$http.get('/appointment/menu', {
-        params: {id: 1}
-      }).then(({data}) => {
-        this.menus = data
-        for (let i in this.menus) {
-          this.load(i)
-        }
-      })
       this.$http.get('/appointment/form', {
-        params: {id: this.id}
+        params: {token: this.$store.state.token, aid: aid}
       }).then(({data}) => {
         console.log(data.fields)
         this.model = data.model
@@ -191,9 +130,96 @@ export default {
         this.rules = data.rules
         this.messages = data.messages
       })
+      this.EditToggle = true
+    },
+    askDel (aid) {
+      this.toEdit = aid
+      this.DelToggle = true
+      this.$http.get('/appointment/del/hint', {
+        params: {token: this.$store.state.token, aid: aid}
+      }).then(({ data }) => {
+        console.log(data)
+      })
+    },
+    askCancel (did) {
+      this.toEdit = did
+      this.CancelToggle = true
+      this.$http.get('/appointment/cancel/hint', {
+        params: {token: this.token}
+      }).then(({ data }) => {
+        console.log(data)
+      })
+    },
+    delConfirmed () {
+      console.log(this.toEdit)
+      this.$http.get('/appointment/del', {
+        params: {
+          token: this.$store.state.token,
+          aid: this.toEdit
+        }
+      }).then(({ data }) => {
+        this.opt = 'del'
+        this.resultHint = data
+        this.snackbar = true
+        this.fetchAppointment()
+      })
+      this.DelToggle = false
+    },
+    cancelConfirmed () {
+      console.log(this.toEdit)
+      this.$http.get('/appointment/cancel', {
+        params: {
+          token: this.$store.state.token,
+          aid: this.toEdit
+        }
+      }).then(({ data }) => {
+        this.opt = 'cancel'
+        this.resultHint = data
+        this.snackbar = true
+        this.fetchAppointment()
+      })
+      this.CancelToggle = false
+    },
+    confirm (aid) {
+      this.$http.get('/appointment/confirm', {
+        params: {
+          token: this.$store.state.token,
+          aid: aid
+        }
+      }).then(({data}) => {
+        this.opt = 'confirm'
+        this.resultHint = data
+        this.snackbar = true
+        this.fetchAppointment()
+      })
+    },
+    fetchMenu () {
+      this.$http.get('/appointment/menu', {
+        params: {token: this.$store.state.token}
+      }).then(({data}) => {
+        this.menus = data
+      })
+    },
+    fetchAppointment () {
+      this.$http.get('/appointment/query', {
+        params: {token: this.$store.state.token}
+      }).then(({ data }) => {
+        for (let i in this.items) {
+          while (this.items[i].length) {
+            this.items[i].pop()
+          }
+        }
+        for (let i in data) {
+          this.items[data[i].status].push(data[i])
+        }
+      })
+    },
+    fetch () {
+      this.fetchMenu()
+      this.fetchAppointment()
     },
     getUser (uid) {
-      this.$http.get('/appointment/query', {
+      this.$http.get('/timeblock/query', {
         params: {uid: this.$store.state.toAppoint}
       }).then(({data}) => {
         this.toAppoint = data.uid

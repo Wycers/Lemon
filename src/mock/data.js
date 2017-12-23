@@ -94,6 +94,7 @@ for (let i = 1; i <= 30; i++) {
   }))
 }
 
+data.users[0].uid = 233
 data.users[0].username = 'admin' // default user
 
 for (let i = 1; i <= 6; i++) {

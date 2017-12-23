@@ -10,7 +10,6 @@
             <v-card-title primary-title>
               <div>
                 <h3 class="headline mb-0">{{ item.name }}</h3>
-                <div>他非常6</div>
               </div>
             </v-card-title>
             <v-card-actions>
@@ -22,17 +21,16 @@
       </v-layout>
     </v-container>
 
-    <div class="headline">
+    <div class="headline" v-if="detail.assistant.length > 0">
       {{ $t('Teacher Assistant')}}:
     </div>
     <v-container fluid grid-list-lg>
       <v-layout row wrap>
-        <v-flex md3 v-for="(item, i) in detail.TA" :key="i">
+        <v-flex md3 v-for="(item, i) in detail.assistant" :key="i">
           <v-card class="elevation-4">
             <v-card-title primary-title>
               <div>
                 <h3 class="headline mb-0">{{ item.name }}</h3>
-                <div>他非常牛逼</div>
               </div>
             </v-card-title>
             <v-card-actions>
@@ -90,16 +88,16 @@
     methods: {
       fetchDomain () {
         this.$http.get('/domainDetail', {
-          params: {id: this.domainid}
+          params: {id: this.domainid, token: this.$store.state.token}
         }).then(({data}) => {
           this.detail = data
         })
       },
       fetchScore () {
         this.$http.get('/score', {
-          params: {id: this.domainid}
+          params: {id: this.domainid, token: this.$store.state.token}
         }).then(({data}) => {
-          this.items.push(data)
+          this.items = data
         })
       },
       createAppointment (uid) {

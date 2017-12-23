@@ -142,10 +142,11 @@ export default {
           this.$emit('submit')
           return false
         }
+        this.model.token = this.$store.state.token
         console.log(this.method)
         console.log(this.action)
         console.log(this.model)
-        this.$http[this.method](this.action, this.model, {params: {token: this.$store.state.token}}).then(({ data }) => {
+        this.$http[this.method](this.action, this.model, this.$store.state.token).then(({ data }) => {
           console.log(data)
           if (data.status === 200) {
             this.hasError = false

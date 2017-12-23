@@ -2,7 +2,8 @@
 v-container
   v-layout.justify-center
     v-flex(md8)
-      v-text-field(inline, label="Domain's name", :value="domainname", required)
+      v-text-field(inline, label="Domain's name", v-model="domaintitle")
+      v-text-field(inline, label="Domain's English name", v-model="domainetitle")
   v-card
     div
       v-btn(router,fab,absolute,top,right,dark,class="blue", @click.native="showAdd",v-if="options.create !== false")
@@ -78,7 +79,8 @@ const getDefaultData = () => {
     isShowRemove: false,
     isEdit: false,
     currentItem: false,
-    domainname: null,
+    domaintitle: null,
+    domainetitle: null,
     items: []
   }
 }
@@ -88,6 +90,32 @@ export default {
 
   watch: {
     'items.length' (val) {
+      for (let i in this.items) {
+        if (this.items[i].type === 'administrator') {
+          continue
+        }
+        if (this.items[i].type === 'lecturer') {
+          continue
+        }
+        if (this.items[i].type === 'assistant') {
+          continue
+        }
+        if (this.items[i].type === 'student') {
+          continue
+        }
+        if (this.items[i].type === 10) {
+          this.items[i].type = 'administrator'
+        }
+        if (this.items[i].type === 11) {
+          this.items[i].type = 'lecturer'
+        }
+        if (this.items[i].type === 12) {
+          this.items[i].type = 'assistant'
+        }
+        if (this.items[i].type === 10) {
+          this.items[i].type = 'student'
+        }
+      }
       if (val === 0) {
         this.$router.go(-1)
       }
@@ -98,15 +126,22 @@ export default {
   methods: {
     submit () {
       if (this.isEdit === true) {
-        this.$http.post('/domain/edit', {token: this.$store.state.token, name: this.domainname, users: this.items}).then(({ data }) => {
+        this.$http.post('/domain/edit', {token: this.$store.state.token, title: this.domaintitle, etitle: this.domainetitle, users: this.items}).then(({ data }) => {
           console.log(233)
           console.log(data)
         })
       } else {
-        this.$http.post('/domain/create', {token: this.$store.state.token, name: this.domainname, users: this.items}).then(({ data }) => {
+        console.log(this.domainname)
+        this.$http.post('/domain/create', {token: this.$store.state.token, title: this.domaintitle, etitle: this.domainetitle, users: this.items}).then(({ data }) => {
           console.log(data)
+          this.fetchMenu()
         })
       }
+    },
+    fetchMenu () {
+      this.$http.get('/menu', {
+        params: {token: this.$store.state.token}
+      }).then(({data}) => this.$store.commit('setMenu', data))
     },
     showHint (str) {
       this.Hint = str
@@ -235,7 +270,9 @@ export default {
     console.log(this.$store.state.user)
     // this.$store.commit('setPageTitle', global.helper.i.titleize(global.helper.i.pluralize(this.resource)))
     this.fetchGrid().then(() => {})
-    this.items.push(this.$store.state.user)
+    let temp = this.$store.state.user
+    temp.type = 10
+    this.items.push(temp)
   }
 
 }

@@ -11,6 +11,7 @@ v-container
           v-btn(color="primary", dark, type='submit') {{$t('Submit')}}
             v-icon(right, dark) send
           div {{ fields }}
+          div {{ model }}
 </template>
 
 <script>
@@ -23,7 +24,6 @@ export default {
       fields: {},
       rules: {},
       messages: {},
-      toAppoint: null,
       Headline: null
     }
   },
@@ -32,11 +32,7 @@ export default {
       return this.isEdit ? 'patch' : 'post'
     },
     action () {
-      if (this.isEdit) {
-        return `${this.resource}/${this.id}`
-      } else {
-        return `${this.resource}`
-      }
+      return '/appointment/create'
     },
     isEdit () {
       return !!this.id
@@ -46,12 +42,6 @@ export default {
     },
     id () {
       return this.$route.params.id
-    },
-    toAppointName () {
-      return this.$store.state.toAppoint.name
-    },
-    toAppointID () {
-      return this.$store.state.toAppoint.uid
     }
   },
   watch: {
@@ -82,28 +72,28 @@ export default {
       })
     },
     onSubmit () {
-
     },
     onSuccess (data) {
       this.$router.push({path: '/appointments'})
     },
     getUser (uid) {
-      this.$http.get('/appointment/query', {
+      this.$http.get('/timeblock/query', {
         params: {uid: this.$store.state.toAppoint}
       }).then(({data}) => {
-        this.toAppoint = data.uid
         var choices = []
-        for (let i in data.timeblocks) {
-          choices.push({
-            text: this.$moment(data.timeblocks[i].timeBegin).calendar() + ' ~ ' + this.$moment(data.timeblocks[i].timeEnd).calendar() + ' at ' + data.timeblocks[i].location,
-            value: i
-          })
+        for (let i in data) {
+          if (data[i].occupied === undefined) {
+            choices.push({
+              text: this.$moment(data[i].timeBegin).calendar() + ' ~ ' + this.$moment(data[i].timeEnd).calendar() + ' at ' + data[i].location,
+              value: data[i].blockid
+            })
+          }
         }
         this.fields.select.choices = choices
         console.log('qwq')
       })
       this.$http.get('/user', {
-        params: {uid: this.toAppoint}
+        params: {uid: this.$store.state.toAppoint}
       }).then(({data}) => {
         console.log(data)
         this.Headline = this.$t('create an appointment') + ':' + data.name

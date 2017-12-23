@@ -82,110 +82,30 @@ mock.onGet('/menu').reply(({params}) => {
   ]]
 })
 
-mock.onGet('/appointment/confirmed').reply(({params}) => {
+mock.onGet('/appointment/query').reply(({params}) => {
   return [200, [
     {
+      status: 1,
       aid: 1,
-      sname: '吴烨昌',
-      sename: 'Wycer',
-      tname: '李景治',
-      avatar: 'http://localhost:3335/static/1.jpg',
-      tename: 'Jingzhi Li',
-      time: '20171229',
-      location: '慧园2栋 403',
+      s: {
+        uid: 233,
+        name: '233',
+        avatar: 'http://localhost:3335/static/1.jpg'
+      },
+      t: {
+        uid: 450,
+        name: '2333',
+        avatar: 'http://localhost:3335/static/1.jpg'
+      },
+      b: {
+        bid: 1,
+        time: '20171229 1234',
+        location: '慧园3栋 403'
+      },
       editable: true,
       deletable: false,
-      cancelable: true
-    }
-  ]]
-})
-mock.onGet('/appointment/inprocess').reply(({params}) => {
-  return [200, [
-    {
-      aid: 2,
-      sname: '吴烨昌',
-      sename: 'Wycer',
-      tname: '李景治',
-      avatar: 'http://localhost:3335/static/1.jpg',
-      tename: 'Jingzhi Li',
-      time: '20171229',
-      location: '慧园2栋 403',
-      editable: true,
-      deletable: false,
-      cancelable: true
-    },
-    {
-      aid: 3,
-      sname: '吴烨昌',
-      sename: 'Wycer',
-      avatar: 'http://localhost:3335/static/1.jpg',
-      tname: '李景治',
-      tename: 'Jingzhi Li',
-      time: '20171229',
-      location: '慧园2栋 403',
-      editable: true,
-      deletable: false,
-      cancelable: true
-    },
-    {
-      aid: 3,
-      sname: '吴烨昌',
-      sename: 'Wycer',
-      avatar: 'http://localhost:3335/static/1.jpg',
-      tname: '李景治',
-      tename: 'Jingzhi Li',
-      time: '20171229',
-      location: '慧园2栋 403',
-      editable: true,
-      deletable: false,
-      cancelable: true
-    },
-    {
-      aid: 3,
-      sname: '吴烨昌',
-      sename: 'Wycer',
-      avatar: 'http://localhost:3335/static/1.jpg',
-      tname: '李景治',
-      tename: 'Jingzhi Li',
-      time: '20171229',
-      location: '慧园2栋 403',
-      editable: true,
-      deletable: false,
-      cancelable: true
-    }
-  ]]
-})
-mock.onGet('/appointment/finished').reply(({params}) => {
-  return [200, [
-    {
-      aid: 4,
-      sname: '吴烨昌',
-      sename: 'Wycer',
-      tname: '李景治',
-      avatar: 'http://localhost:3335/static/1.jpg',
-      tename: 'Jingzhi Li',
-      time: '20171210 1209',
-      location: '慧园2栋 403',
-      editable: false,
-      deletable: true,
-      cancelable: false
-    }
-  ]]
-})
-mock.onGet('/appointment/closed').reply(({params}) => {
-  return [200, [
-    {
-      aid: 5,
-      sname: '吴烨昌',
-      sename: 'Wycer',
-      tname: '李景治',
-      avatar: 'http://localhost:3335/static/1.jpg',
-      tename: 'Jingzhi Li',
-      time: '20171229',
-      location: '慧园2栋 403',
-      editable: false,
-      deletable: true,
-      cancelable: false
+      cancelable: true,
+      confirmable: true
     }
   ]]
 })
@@ -200,7 +120,7 @@ mock.onGet('/domainDetail').reply(({ params }) => {
         name: '李景治',
         uid: 233
       }],
-      'TA': [
+      assistant: [
         {
           name: 'TA1',
           uid: 234
@@ -391,7 +311,7 @@ mock.onGet('/posts/form').reply(({ params }) => {
 mock.onGet('/appointment/form').reply(({ params }) => {
   return [200, {
     'model': {
-      type_id: null,
+      token: null,
       title: null,
       body: null
     },
@@ -476,24 +396,23 @@ mock.onGet('/posts/grid').reply(200, {
   ]
 })
 
-mock.onGet('/appointment/query').reply(({ params }) => {
-  return [200, {
-    uid: params.uid,
-    timeblocks: [
-      {
-        timeBegin: '20171213 1234',
-        timeEnd: '20171213 1244',
-        occupied: 'null',
-        location: '慧园2栋203'
-      },
-      {
-        timeBegin: '20171214 1235',
-        timeEnd: '20171214 1245',
-        occupied: 'null',
-        location: '慧园2栋203'
-      }
-    ]
-  }]
+mock.onPost('/appointment/try').reply(({params}) => {
+  console.log(params)
+})
+mock.onGet('/timeblock/query').reply(({ params }) => {
+  return [200, [
+    {
+      timeBegin: '20171224 1234',
+      timeEnd: '20171224 1244',
+      occupied: 233,
+      location: '慧园2栋203'
+    },
+    {
+      timeBegin: '20171224 1235',
+      timeEnd: '20171214 1245',
+      location: '慧园2栋203'
+    }
+  ]]
 })
 
 mock.onGet('/appointment/grid').reply(200, {
